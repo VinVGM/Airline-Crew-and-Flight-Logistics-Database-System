@@ -3,6 +3,8 @@
 /src/app/seed
 /src/app/ui/customers
 /src/app/ui/invoices
-/src/app/ui/dashboard
+
 /src/public/customers
 /src/public
+src/app/ui/dashboard/latest-invoices.tsx
+src/app/ui/dashboard/cards.tsx
