@@ -2,7 +2,7 @@
 /src/app/query
 /src/app/seed
 /src/app/ui/customers
-/src/app/ui/invoices
+
 
 /src/public/customers
 /src/public
@@ -12,3 +12,8 @@ src/app/lib/definitions.ts
 src/app/lib/placeholder-data.ts
 src/app/lib/utils.ts
 src/app/lib/data.ts
+src/app/ui/invoices/create-form-to-be-del.tsx
+src/app/ui/invoices/edit-form.tsx
+src/app/ui/invoices/pagination.tsx
+src/app/ui/invoices/status.tsx
+src/app/ui/invoices/table.tsx
