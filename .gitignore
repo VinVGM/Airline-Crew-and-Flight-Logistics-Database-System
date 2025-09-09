@@ -1,4 +1,4 @@
-/src/app/lib
+
 /src/app/query
 /src/app/seed
 /src/app/ui/customers
@@ -8,3 +8,7 @@
 /src/public
 src/app/ui/dashboard/latest-invoices.tsx
 src/app/ui/dashboard/cards.tsx
+src/app/lib/definitions.ts
+src/app/lib/placeholder-data.ts
+src/app/lib/utils.ts
+src/app/lib/data.ts
