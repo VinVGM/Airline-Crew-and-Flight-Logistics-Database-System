@@ -84,15 +84,56 @@ async function createAirportTable() {
     `
 }
 
+
+async function createFlightTable() {
+    await sql`
+    CREATE TABLE IF NOT EXISTS FLIGHT (
+    Flight_ID UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    User_ID UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    Flight_No VARCHAR(20) UNIQUE NOT NULL,
+    Status VARCHAR(50) NOT NULL,
+    Aircraft_ID UUID NOT NULL REFERENCES AIRCRAFT(Aircraft_ID) ON DELETE CASCADE,
+    Origin_Airport_ID UUID NOT NULL REFERENCES AIRPORT(Airport_ID),
+    Destination_Airport_ID UUID NOT NULL REFERENCES AIRPORT(Airport_ID),
+    Created_At TIMESTAMPTZ DEFAULT NOW()
+    );
+    `
+}
+
+
+
+async function createFlightSchedule() {
+    await sql`
+    CREATE TABLE IF NOT EXISTS FLIGHT_SCHEDULE (
+    Schedule_ID UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    User_ID UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    Crew_ID UUID NOT NULL REFERENCES CREW(Crew_ID),
+    Flight_ID UUID NOT NULL REFERENCES FLIGHT(Flight_ID),
+    Arrival_Time TIMESTAMPTZ NOT NULL,
+    Departure_Time TIMESTAMPTZ NOT NULL,
+    Date DATE NOT NULL,
+    Created_At TIMESTAMPTZ DEFAULT NOW()
+    );
+
+    `
+}
+
+
+
+
 export async function GET() {
   try {
     const result = await sql.begin((sql) => {
-        seedUsers();
-        createEmployeeTable();
-        createCrewTable();
-        createCrewMembersTable();
-        createAircraftTable();
-        createAirportTable();
+        //seedUsers();
+        // createEmployeeTable();
+        // createCrewTable();
+        // createCrewMembersTable();
+        // createAircraftTable();
+        // createAirportTable();
+        // createFlightTable();
+        // createFlightSchedule();
+
+
     })
 
     return Response.json({ message: "Success" }, { status: 200 });
