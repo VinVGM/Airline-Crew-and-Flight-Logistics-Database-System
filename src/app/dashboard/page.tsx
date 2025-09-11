@@ -1,5 +1,9 @@
+import FlightSchedulesTable from '@/app/ui/schedules/table';
+
 export default function Page() {
     return (
-        <div></div>
+        <div>
+            <FlightSchedulesTable />
+        </div>
     );
 }

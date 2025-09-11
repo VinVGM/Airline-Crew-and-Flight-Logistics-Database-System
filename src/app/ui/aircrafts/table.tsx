@@ -1,6 +1,8 @@
 import { Aircraft } from '@/app/lib/definitions-acpl';
 import { fetchAircrafts } from '@/app/lib/data-acfl';
 
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+
 export default async function AircraftsTable() {
   // const aircrafts: Aircraft[] = await fetchAircrafts();
 
@@ -24,7 +26,6 @@ export default async function AircraftsTable() {
       created_at: '2018-09-15',
     },
   ];
-
 
   return (
     <div className="mt-6 flow-root">
@@ -56,6 +57,14 @@ export default async function AircraftsTable() {
                       Added: {aircraft.created_at}
                     </p>
                   </div>
+                  <div className="flex gap-2">
+                    <button className="text-blue-600 hover:text-blue-800" title="Update">
+                      <PencilSquareIcon className="h-5 w-5" />
+                    </button>
+                    <button className="text-red-600 hover:text-red-800" title="Delete">
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -68,6 +77,7 @@ export default async function AircraftsTable() {
                 <th className="px-3 py-5 font-medium">Capacity</th>
                 <th className="px-3 py-5 font-medium">Status</th>
                 <th className="px-3 py-5 font-medium">Added</th>
+                <th className="px-3 py-5 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -81,6 +91,16 @@ export default async function AircraftsTable() {
                   <td className="whitespace-nowrap px-3 py-3">{aircraft.capacity}</td>
                   <td className="whitespace-nowrap px-3 py-3">{aircraft.maintenance_status}</td>
                   <td className="whitespace-nowrap px-3 py-3">{aircraft.created_at}</td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    <div className="flex gap-2">
+                      <button className="text-blue-600 hover:text-blue-800" title="Update">
+                        <PencilSquareIcon className="h-5 w-5" />
+                      </button>
+                      <button className="text-red-600 hover:text-red-800" title="Delete">
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -259,6 +259,138 @@ export function AircraftsTableSkeleton() {
 
 
 
+// Skeleton for Crew Members Table
+
+function CrewMemberTableRowSkeleton() {
+  return (
+    <tr className="w-full border-b border-gray-100 last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
+      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-24 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-28 rounded bg-gray-100"></div>
+      </td>
+    </tr>
+  );
+}
+
+function CrewMembersMobileSkeleton() {
+  return (
+    <div className="mb-2 w-full rounded-md bg-white p-4">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div>
+          <div className="h-6 w-20 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-24 rounded bg-gray-100"></div>
+        </div>
+        <div>
+          <div className="h-5 w-28 rounded bg-gray-100"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function CrewMembersTableSkeleton() {
+  return (
+    <div className="mt-6 flow-root">
+      <div className="inline-block min-w-full align-middle">
+        <div className={`relative overflow-hidden rounded-lg bg-gray-50 p-2 md:pt-0 ${shimmer}`}>
+          <div className="md:hidden">
+            <CrewMembersMobileSkeleton />
+            <CrewMembersMobileSkeleton />
+            <CrewMembersMobileSkeleton />
+            <CrewMembersMobileSkeleton />
+          </div>
+          <table className="hidden min-w-full text-gray-900 md:table">
+            <thead className="rounded-lg text-left text-sm font-normal">
+              <tr>
+                <th className="px-4 py-5 font-medium sm:pl-6">Crew ID</th>
+                <th className="px-3 py-5 font-medium">Employee ID</th>
+                <th className="px-3 py-5 font-medium">Role</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              <CrewMemberTableRowSkeleton />
+              <CrewMemberTableRowSkeleton />
+              <CrewMemberTableRowSkeleton />
+              <CrewMemberTableRowSkeleton />
+              <CrewMemberTableRowSkeleton />
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+// Skeleton for Crew Table
+
+function CrewTableRowSkeleton() {
+  return (
+    <tr className="w-full border-b border-gray-100 last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
+      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+        <div className="h-6 w-40 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-32 rounded bg-gray-100"></div>
+      </td>
+    </tr>
+  );
+}
+
+function CrewsMobileSkeleton() {
+  return (
+    <div className="mb-2 w-full rounded-md bg-white p-4">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div>
+          <div className="h-6 w-40 rounded bg-gray-100 mb-2"></div>
+        </div>
+        <div>
+          <div className="h-5 w-32 rounded bg-gray-100"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function CrewsTableSkeleton() {
+  return (
+    <div className="mt-6 flow-root">
+      <div className="inline-block min-w-full align-middle">
+        <div className={`relative overflow-hidden rounded-lg bg-gray-50 p-2 md:pt-0 ${shimmer}`}>
+          <div className="md:hidden">
+            <CrewsMobileSkeleton />
+            <CrewsMobileSkeleton />
+            <CrewsMobileSkeleton />
+            <CrewsMobileSkeleton />
+          </div>
+          <table className="hidden min-w-full text-gray-900 md:table">
+            <thead className="rounded-lg text-left text-sm font-normal">
+              <tr>
+                <th className="px-4 py-5 font-medium sm:pl-6">Crew Name</th>
+                <th className="px-3 py-5 font-medium">Created</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              <CrewTableRowSkeleton />
+              <CrewTableRowSkeleton />
+              <CrewTableRowSkeleton />
+              <CrewTableRowSkeleton />
+              <CrewTableRowSkeleton />
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 
 export function CardSkeleton() {
   return (
@@ -275,6 +407,188 @@ export function CardSkeleton() {
     </div>
   );
 }
+
+
+
+// Skeleton for Flights Table
+
+function FlightTableRowSkeleton() {
+  return (
+    <tr className="w-full border-b border-gray-100 last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
+      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+        <div className="h-6 w-24 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-24 rounded bg-gray-100"></div>
+      </td>
+    </tr>
+  );
+}
+
+function FlightsMobileSkeleton() {
+  return (
+    <div className="mb-2 w-full rounded-md bg-white p-4">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div>
+          <div className="h-6 w-24 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-20 rounded bg-gray-100"></div>
+        </div>
+        <div>
+          <div className="h-5 w-20 rounded bg-gray-100"></div>
+        </div>
+      </div>
+      <div className="flex w-full items-center justify-between pt-4">
+        <div>
+          <div className="h-5 w-20 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-24 rounded bg-gray-100"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function FlightsTableSkeleton() {
+  return (
+    <div className="mt-6 flow-root">
+      <div className="inline-block min-w-full align-middle">
+        <div className={`relative overflow-hidden rounded-lg bg-gray-50 p-2 md:pt-0 ${shimmer}`}>
+          <div className="md:hidden">
+            <FlightsMobileSkeleton />
+            <FlightsMobileSkeleton />
+            <FlightsMobileSkeleton />
+            <FlightsMobileSkeleton />
+          </div>
+          <table className="hidden min-w-full text-gray-900 md:table">
+            <thead className="rounded-lg text-left text-sm font-normal">
+              <tr>
+                <th className="px-4 py-5 font-medium sm:pl-6">Flight No</th>
+                <th className="px-3 py-5 font-medium">Status</th>
+                <th className="px-3 py-5 font-medium">Aircraft</th>
+                <th className="px-3 py-5 font-medium">From</th>
+                <th className="px-3 py-5 font-medium">To</th>
+                <th className="px-3 py-5 font-medium">Created</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              <FlightTableRowSkeleton />
+              <FlightTableRowSkeleton />
+              <FlightTableRowSkeleton />
+              <FlightTableRowSkeleton />
+              <FlightTableRowSkeleton />
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+// Skeleton for Flight Schedules Table
+
+function ScheduleTableRowSkeleton() {
+  return (
+    <tr className="w-full border-b border-gray-100 last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
+      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-28 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-28 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-24 rounded bg-gray-100"></div>
+      </td>
+    </tr>
+  );
+}
+
+function SchedulesMobileSkeleton() {
+  return (
+    <div className="mb-2 w-full rounded-md bg-white p-4">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div>
+          <div className="h-6 w-20 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-20 rounded bg-gray-100"></div>
+        </div>
+        <div>
+          <div className="h-5 w-20 rounded bg-gray-100"></div>
+        </div>
+      </div>
+      <div className="flex w-full items-center justify-between pt-4">
+        <div>
+          <div className="h-5 w-28 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-28 rounded bg-gray-100"></div>
+          <div className="h-5 w-24 rounded bg-gray-100 mt-2"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function SchedulesTableSkeleton() {
+  return (
+    <div className="mt-6 flow-root">
+      <div className="inline-block min-w-full align-middle">
+        <div className={`relative overflow-hidden rounded-lg bg-gray-50 p-2 md:pt-0 ${shimmer}`}>
+          <div className="md:hidden">
+            <SchedulesMobileSkeleton />
+            <SchedulesMobileSkeleton />
+            <SchedulesMobileSkeleton />
+            <SchedulesMobileSkeleton />
+          </div>
+          <table className="hidden min-w-full text-gray-900 md:table">
+            <thead className="rounded-lg text-left text-sm font-normal">
+              <tr>
+                <th className="px-4 py-5 font-medium sm:pl-6">Flight</th>
+                <th className="px-3 py-5 font-medium">Crew</th>
+                <th className="px-3 py-5 font-medium">Date</th>
+                <th className="px-3 py-5 font-medium">Departure</th>
+                <th className="px-3 py-5 font-medium">Arrival</th>
+                <th className="px-3 py-5 font-medium">Created</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              <ScheduleTableRowSkeleton />
+              <ScheduleTableRowSkeleton />
+              <ScheduleTableRowSkeleton />
+              <ScheduleTableRowSkeleton />
+              <ScheduleTableRowSkeleton />
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
+
 
 export function CardsSkeleton() {
   return (
