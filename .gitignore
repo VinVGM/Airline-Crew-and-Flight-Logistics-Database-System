@@ -17,3 +17,4 @@ src/app/ui/invoices/edit-form.tsx
 src/app/ui/invoices/pagination.tsx
 src/app/ui/invoices/status.tsx
 src/app/ui/invoices/table.tsx
+node_modules
