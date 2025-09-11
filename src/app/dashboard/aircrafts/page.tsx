@@ -1,5 +1,9 @@
+import AircraftsTable from '@/app/ui/aircrafts/table';
+
 export default function Page() {
     return (
-        <div></div>
+        <div>
+            <AircraftsTable />
+        </div>
     );
 }

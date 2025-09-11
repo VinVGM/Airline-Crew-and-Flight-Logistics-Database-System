@@ -1,5 +1,9 @@
+import AirportsTable from '@/app/ui/airports/table';
+
 export default function Page() {
     return (
-        <div></div>
+        <div>
+            <AirportsTable />
+        </div>
     );
 }

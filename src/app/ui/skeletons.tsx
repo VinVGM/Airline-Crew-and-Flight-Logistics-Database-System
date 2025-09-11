@@ -2,6 +2,264 @@
 const shimmer =
   'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent';
 
+
+
+// Skeleton for Employee Table
+
+function EmployeeTableRowSkeleton() {
+  return (
+    <tr className="w-full border-b border-gray-100 last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
+      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+        <div className="h-6 w-24 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-24 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-16 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-28 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-24 rounded bg-gray-100"></div>
+      </td>
+    </tr>
+  );
+}
+
+function EmployeesMobileSkeleton() {
+  return (
+    <div className="mb-2 w-full rounded-md bg-white p-4">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div>
+          <div className="h-6 w-24 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-20 rounded bg-gray-100"></div>
+        </div>
+        <div>
+          <div className="h-5 w-20 rounded bg-gray-100"></div>
+        </div>
+      </div>
+      <div className="flex w-full items-center justify-between pt-4">
+        <div>
+          <div className="h-5 w-28 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-32 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-24 rounded bg-gray-100"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function EmployeesTableSkeleton() {
+  return (
+    <div className="mt-6 flow-root">
+      <div className="inline-block min-w-full align-middle">
+        <div className={`${shimmer} rounded-lg bg-gray-50 p-2 md:pt-0 relative overflow-hidden`}>
+          <div className="md:hidden">
+            <EmployeesMobileSkeleton />
+            <EmployeesMobileSkeleton />
+            <EmployeesMobileSkeleton />
+            <EmployeesMobileSkeleton />
+          </div>
+          <table className="hidden min-w-full text-gray-900 md:table">
+            <thead className="rounded-lg text-left text-sm font-normal">
+              <tr>
+                <th className="px-4 py-5 font-medium sm:pl-6">Name</th>
+                <th className="px-3 py-5 font-medium">Designation</th>
+                <th className="px-3 py-5 font-medium">DOB</th>
+                <th className="px-3 py-5 font-medium">Experience</th>
+                <th className="px-3 py-5 font-medium">License Number</th>
+                <th className="px-3 py-5 font-medium">Joined</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              <EmployeeTableRowSkeleton />
+              <EmployeeTableRowSkeleton />
+              <EmployeeTableRowSkeleton />
+              <EmployeeTableRowSkeleton />
+              <EmployeeTableRowSkeleton />
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+// Skeleton for Airports Table
+
+function AirportTableRowSkeleton() {
+  return (
+    <tr className="w-full border-b border-gray-100 last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
+      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+        <div className="h-6 w-16 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-40 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-20 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-24 rounded bg-gray-100"></div>
+      </td>
+    </tr>
+  );
+}
+
+function AirportsMobileSkeleton() {
+  return (
+    <div className="mb-2 w-full rounded-md bg-white p-4">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div>
+          <div className="h-6 w-40 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-16 rounded bg-gray-100"></div>
+        </div>
+        <div>
+          <div className="h-5 w-24 rounded bg-gray-100"></div>
+        </div>
+      </div>
+      <div className="flex w-full items-center justify-between pt-4">
+        <div>
+          <div className="h-5 w-20 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-20 rounded bg-gray-100"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function AirportsTableSkeleton() {
+  
+  return (
+    <div className="mt-6 flow-root">
+      <div className="inline-block min-w-full align-middle">
+        <div className={`relative overflow-hidden rounded-lg bg-gray-50 p-2 md:pt-0`}>
+          <div className="md:hidden">
+            <AirportsMobileSkeleton />
+            <AirportsMobileSkeleton />
+            <AirportsMobileSkeleton />
+            <AirportsMobileSkeleton />
+          </div>
+          <table className="hidden min-w-full text-gray-900 md:table">
+            <thead className="rounded-lg text-left text-sm font-normal">
+              <tr>
+                <th className="px-4 py-5 font-medium sm:pl-6">Code</th>
+                <th className="px-3 py-5 font-medium">Name</th>
+                <th className="px-3 py-5 font-medium">City</th>
+                <th className="px-3 py-5 font-medium">Country</th>
+                <th className="px-3 py-5 font-medium">Created</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              <AirportTableRowSkeleton />
+              <AirportTableRowSkeleton />
+              <AirportTableRowSkeleton />
+              <AirportTableRowSkeleton />
+              <AirportTableRowSkeleton />
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+// Skeleton for Airports Table
+
+function AircraftTableRowSkeleton() {
+  return (
+    <tr className="w-full border-b border-gray-100 last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
+      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+        <div className="h-6 w-28 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-32 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-16 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-28 rounded bg-gray-100"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-24 rounded bg-gray-100"></div>
+      </td>
+    </tr>
+  );
+}
+
+function AircraftsMobileSkeleton() {
+  return (
+    <div className="mb-2 w-full rounded-md bg-white p-4">
+      <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div>
+          <div className="h-6 w-28 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-32 rounded bg-gray-100"></div>
+        </div>
+        <div>
+          <div className="h-5 w-16 rounded bg-gray-100"></div>
+        </div>
+      </div>
+      <div className="flex w-full items-center justify-between pt-4">
+        <div>
+          <div className="h-5 w-28 rounded bg-gray-100 mb-2"></div>
+          <div className="h-5 w-24 rounded bg-gray-100"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function AircraftsTableSkeleton() {
+  return (
+    <div className="mt-6 flow-root">
+      <div className="inline-block min-w-full align-middle">
+        <div className={`relative overflow-hidden rounded-lg bg-gray-50 p-2 md:pt-0 ${shimmer}`}>
+          <div className="md:hidden">
+            <AircraftsMobileSkeleton />
+            <AircraftsMobileSkeleton />
+            <AircraftsMobileSkeleton />
+            <AircraftsMobileSkeleton />
+          </div>
+          <table className="hidden min-w-full text-gray-900 md:table">
+            <thead className="rounded-lg text-left text-sm font-normal">
+              <tr>
+                <th className="px-4 py-5 font-medium sm:pl-6">Model</th>
+                <th className="px-3 py-5 font-medium">Manufacturer</th>
+                <th className="px-3 py-5 font-medium">Capacity</th>
+                <th className="px-3 py-5 font-medium">Status</th>
+                <th className="px-3 py-5 font-medium">Added</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              <AircraftTableRowSkeleton />
+              <AircraftTableRowSkeleton />
+              <AircraftTableRowSkeleton />
+              <AircraftTableRowSkeleton />
+              <AircraftTableRowSkeleton />
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
 export function CardSkeleton() {
   return (
     <div
