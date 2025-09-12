@@ -1,34 +1,11 @@
 import { fetchEmployees } from '@/app/lib/data-acfl';
-import { Employee } from '@/app/lib/definitions-acpl';
+
 
 export default async function EmployeesTable() {
-  // const employees: Employee[] = await fetchEmployees();
+  const employees = await fetchEmployees();
 
 
-  // Mock data for layout preview (remove or comment out after DB works)
-  const employees: Employee[] = [
-    {
-      employee_id: '1',
-      user_id: '1',
-      name: 'John Doe',
-      designation: 'Pilot',
-      dob: '1980-05-12',
-      license_number: 'ABC123',
-      experience: 10,
-      created_at: '2020-01-01',
-    },
-    {
-      employee_id: '2',
-      user_id: '2',
-      name: 'Jane Smith',
-      designation: 'Co-Pilot',
-      dob: '1985-08-22',
-      license_number: null,
-      experience: 7,
-      created_at: '2021-03-15',
-    },
-  ];
-  // End mock data
+  
 
 
   return (

@@ -17,7 +17,13 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require'});
 export async function fetchEmployees(){
     try{
         const data = await sql<Employee[]>`SELECT * FROM employee`;
-        return data;
+        
+        return data.map(emp => ({
+            ...emp,
+            dob: emp.dob instanceof Date ? emp.dob.toISOString().split('T')[0] : emp.dob,
+            created_at: emp.created_at instanceof Date ? emp.created_at.toISOString().split('T')[0] : emp.created_at,
+        }));
+
     }catch(error){
         console.error('Database Error:', error);
         throw new Error('Failed to fetch employee data.');
