@@ -1,6 +1,8 @@
 import { fetchEmployees } from '@/app/lib/data-acfl';
 
 
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+  
 export default async function EmployeesTable() {
   const employees = await fetchEmployees();
 
@@ -41,6 +43,14 @@ export default async function EmployeesTable() {
                       Joined: {employee.created_at}
                     </p>
                   </div>
+                  <div className="flex gap-2">
+                    <button className="text-blue-600 hover:text-blue-800" title="Update">
+                      <PencilSquareIcon className="h-5 w-5" />
+                    </button>
+                    <button className="text-red-600 hover:text-red-800" title="Delete">
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -54,6 +64,7 @@ export default async function EmployeesTable() {
                 <th className="px-3 py-5 font-medium">Experience</th>
                 <th className="px-3 py-5 font-medium">License Number</th>
                 <th className="px-3 py-5 font-medium">Joined</th>
+                <th className="px-3 py-5 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -68,6 +79,16 @@ export default async function EmployeesTable() {
                   <td className="whitespace-nowrap px-3 py-3">{employee.experience} yrs</td>
                   <td className="whitespace-nowrap px-3 py-3">{employee.license_number || '-'}</td>
                   <td className="whitespace-nowrap px-3 py-3">{employee.created_at}</td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    <div className="flex gap-2">
+                      <button className="text-blue-600 hover:text-blue-800" title="Update">
+                        <PencilSquareIcon className="h-5 w-5" />
+                      </button>
+                      <button className="text-red-600 hover:text-red-800" title="Delete">
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
