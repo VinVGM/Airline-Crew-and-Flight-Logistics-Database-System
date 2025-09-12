@@ -2,15 +2,20 @@
 
 import { Button } from '@/app/ui/button';
 import Link from 'next/link';
-import { createEmployee } from '@/app/lib/actions';
+import { updateEmployee } from '@/app/lib/actions';
 import { useActionState } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { Employee } from '@/app/lib/definitions-acpl';
 
 
-export default function Form() {
+export default function EditForm({
+    employee
+}:{
+    employee: Employee;
+}) {
     const [errorMessage, formAction] = useActionState(
         async (_state: string | undefined, formData : FormData) => {
-            return await createEmployee(formData);
+            return await updateEmployee(formData, employee.employee_id);
         },
         undefined
     )
@@ -28,6 +33,7 @@ export default function Form() {
                             name='name'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
                             placeholder='Employee Name'
+                            defaultValue={employee.name}
                         />
                     </div>
                 </div>
@@ -42,6 +48,7 @@ export default function Form() {
                             name='designation'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
                             placeholder='First Officer'
+                            defaultValue={employee.designation}
                         />
                     </div>
                 </div>
@@ -57,6 +64,7 @@ export default function Form() {
                             name='dob'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
                             required
+                            defaultValue={employee.dob}
                         />
                     </div>
                 </div>
@@ -77,6 +85,7 @@ export default function Form() {
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
                             placeholder='BA4597'
                             required
+                            defaultValue={employee.license_number}
                         />
                     </div>
                 </div>
@@ -95,6 +104,7 @@ export default function Form() {
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
                             placeholder='1-25'
                             required
+                            defaultValue={employee.experience}
                         />
                     </div>
                 </div>
@@ -106,7 +116,7 @@ export default function Form() {
                     >
                         Cancel
                     </Link>
-                    <Button type='submit'>Create Employee</Button>
+                    <Button type='submit'>Update Employee</Button>
                 </div>
 
                 <div className='flex h-8 items-end space-x-1'>

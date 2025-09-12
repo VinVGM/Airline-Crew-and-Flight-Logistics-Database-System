@@ -1,8 +1,8 @@
 import Form from "@/app/ui/invoices/create-employee-form";
 
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
-
-
+import { Suspense } from "react";
+import { FormSkeleton } from "@/app/ui/skeletons";
 export default function Page() {
     return (
         <main>
@@ -12,7 +12,9 @@ export default function Page() {
                     { label: "Create Employee", href: "/dashboard/employees/create", active: true },
                 ]}
             />
-            <Form />
+            <Suspense fallback={<FormSkeleton />}>
+                 <Form/>
+            </Suspense>
         </main>
     );
 }

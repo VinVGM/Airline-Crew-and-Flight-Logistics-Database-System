@@ -788,3 +788,46 @@ export function InvoicesTableSkeleton() {
     </div>
   );
 }
+
+
+export function FormSkeleton() {
+  return (
+    <div className="rounded-md bg-gray-50 p-6 max-w-md mx-auto space-y-6">
+      {/* Name */}
+      <div>
+        <div className="h-5 w-24 rounded bg-gray-200 mb-2"></div>
+        <div className="h-10 rounded bg-gray-200"></div>
+      </div>
+
+      {/* Designation */}
+      <div>
+        <div className="h-5 w-32 rounded bg-gray-200 mb-2"></div>
+        <div className="h-10 rounded bg-gray-200"></div>
+      </div>
+
+      {/* Date of Birth */}
+      <div>
+        <div className="h-5 w-28 rounded bg-gray-200 mb-2"></div>
+        <div className="h-10 rounded bg-gray-200"></div>
+      </div>
+
+      {/* License Number */}
+      <div>
+        <div className="h-5 w-36 rounded bg-gray-200 mb-2"></div>
+        <div className="h-10 rounded bg-gray-200"></div>
+      </div>
+
+      {/* Experience */}
+      <div>
+        <div className="h-5 w-20 rounded bg-gray-200 mb-2"></div>
+        <div className="h-10 rounded bg-gray-200"></div>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-end space-x-4 pt-4">
+        <div className="h-10 w-24 rounded bg-gray-200"></div>
+        <div className="h-10 w-32 rounded bg-gray-200"></div>
+      </div>
+    </div>
+  );
+}

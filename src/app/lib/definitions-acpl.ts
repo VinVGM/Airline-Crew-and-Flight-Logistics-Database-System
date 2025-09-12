@@ -4,7 +4,7 @@ export type Employee = {
   name: string;
   designation: string;
   dob: string;           // ISO date (e.g., "1980-05-12")
-  license_number?: string | null;
+  license_number: string;
   experience: number;
   created_at: string;    // timestamp
 };

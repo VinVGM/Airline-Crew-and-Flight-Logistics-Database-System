@@ -44,11 +44,83 @@ export async function createEmployee(formData : FormData){
           VALUES (${user.id}, ${name}, ${designation}, ${new_dob}, ${license_number}, ${experience})
       `
     }catch(error){
-      return "Something went wrong, Try Again. Error: "
+      return `Something went wrong, Try Again. Error: ${error}`
     }
     
     revalidatePath('/dashboard/employees')
     redirect('/dashboard/employees')
 
     
+}
+
+export async function updateEmployee(formData:FormData, id: string) {
+  const {name, designation, dob, license_number, experience} = employeeSchema.parse({
+        name: formData.get('name'),
+        designation: formData.get('designation'),
+        dob: formData.get('dob'),
+        license_number: formData.get('license_number'),
+        experience: formData.get('experience'),
+    })
+
+    const new_dob = new Date(dob).toISOString().split('T')[0];
+
+    const supabase = await createClient();
+
+    const { data: {user}} = await supabase.auth.getUser();
+
+    try{
+      await sql`
+        Update employee
+        SET
+          name = ${name},
+          designation = ${designation},
+          dob = ${new_dob},
+          license_number = ${license_number},
+          experience = ${experience}
+        WHERE
+        user_id = ${user.id} AND employee_id = ${id}
+
+
+      `
+      const debubquery = `
+        Update employee
+        SET
+          name = '${name}',
+          designation = '${designation}',
+          dob = '${new_dob}',
+          license_number = '${license_number}',
+          experience = '${experience}'
+        WHERE
+        user_id = '${user.id}' AND employee_id = '${id}'
+
+
+      `
+
+      console.log(debubquery)
+
+
+      
+    }catch(error){
+      return `Something went Wrong! Error: ${error} `
+    }
+
+
+    revalidatePath('/dashboard/employees')
+    redirect('/dashboard/employees')
+  
+}
+
+
+export async function deleteEmployee(id : string){
+  const supabase = await createClient();
+
+  const { data: {user}} = await supabase.auth.getUser();
+  
+  
+  await sql `
+    DELETE FROM employee
+    where user_id = ${user.id} and employee_id = ${id};
+  `
+
+  revalidatePath('/dashboard/invoices');
 }

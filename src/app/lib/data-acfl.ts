@@ -9,6 +9,8 @@ import {
     Flight,
     FlightSchedule,
 } from './definitions-acpl'
+import { create } from 'domain';
+import { createClient } from '@/supabase/server';
 
 
 
@@ -16,7 +18,11 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require'});
 
 export async function fetchEmployees(){
     try{
-        const data = await sql<Employee[]>`SELECT * FROM employee`;
+
+        const supabase = await createClient();
+
+        const { data: { user }} = await supabase.auth.getUser()
+        const data = await sql<Employee[]>`SELECT * FROM employee where user_id = ${user.id}`;
         
         return data.map(emp => ({
             ...emp,
@@ -24,6 +30,24 @@ export async function fetchEmployees(){
             created_at: emp.created_at instanceof Date ? emp.created_at.toISOString().split('T')[0] : emp.created_at,
         }));
 
+    }catch(error){
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch employee data.');
+    }
+}
+
+
+export async function fetchEmployeeById(id :string){
+    const supabase = await createClient();
+
+    const { data: { user }} = await supabase.auth.getUser()
+    try{
+        const data = await sql<Employee[]>`SELECT * FROM employee where employee_id=${id} AND user_id=${user.id};`
+        return data.map(emp => ({
+            ...emp,
+            dob: emp.dob instanceof Date ? emp.dob.toISOString().split('T')[0] : emp.dob,
+            created_at: emp.created_at instanceof Date ? emp.created_at.toISOString().split('T')[0] : emp.created_at,
+        }));
     }catch(error){
         console.error('Database Error:', error);
         throw new Error('Failed to fetch employee data.');

@@ -2,7 +2,8 @@ import { fetchEmployees } from '@/app/lib/data-acfl';
 
 
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
-  
+import Link from 'next/link';
+import { DeleteEmployee, UpdateEmployee } from './buttons';
 export default async function EmployeesTable() {
   const employees = await fetchEmployees();
 
@@ -43,14 +44,7 @@ export default async function EmployeesTable() {
                       Joined: {employee.created_at}
                     </p>
                   </div>
-                  <div className="flex gap-2">
-                    <button className="text-blue-600 hover:text-blue-800" title="Update">
-                      <PencilSquareIcon className="h-5 w-5" />
-                    </button>
-                    <button className="text-red-600 hover:text-red-800" title="Delete">
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
-                  </div>
+                  
                 </div>
               </div>
             ))}
@@ -81,12 +75,8 @@ export default async function EmployeesTable() {
                   <td className="whitespace-nowrap px-3 py-3">{employee.created_at}</td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <div className="flex gap-2">
-                      <button className="text-blue-600 hover:text-blue-800" title="Update">
-                        <PencilSquareIcon className="h-5 w-5" />
-                      </button>
-                      <button className="text-red-600 hover:text-red-800" title="Delete">
-                        <TrashIcon className="h-5 w-5" />
-                      </button>
+                      <UpdateEmployee id={employee.employee_id}/>
+                      <DeleteEmployee id={employee.employee_id}/>
                     </div>
                   </td>
                 </tr>
