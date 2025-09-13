@@ -4,8 +4,14 @@ import { fetchFlightSchedules } from '@/app/lib/data-acfl';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { DeleteSchedule, UpdateSchedule } from './buttons';
 
-export default async function FlightSchedulesTable() {
-  const schedules: FlightSchedule[] = await fetchFlightSchedules();
+export default async function FlightSchedulesTable({
+    query,
+    currentPage,
+  }:{
+    query: string;
+    currentPage: number
+  }) {
+  const schedules: FlightSchedule[] = await fetchFlightSchedules(query, currentPage);
 
   return (
     <div className="mt-6 flow-root">
@@ -68,7 +74,7 @@ export default async function FlightSchedulesTable() {
                   key={schedule.schedule_id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">{schedule.flight_id}</td>
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3">{schedule.flight_no}</td>
                   <td className="whitespace-nowrap px-3 py-3">{schedule.crew_id}</td>
                   <td className="whitespace-nowrap px-3 py-3">{schedule.date}</td>
                   <td className="whitespace-nowrap px-3 py-3">{schedule.departure_time}</td>

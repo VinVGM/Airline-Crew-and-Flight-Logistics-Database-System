@@ -4,8 +4,24 @@ import {CreateCrewMembers } from '@/app/ui/crews/buttons';
 import Search from '@/app/ui/search';
 import { Suspense } from 'react';
 import { CrewMembersTableSkeleton } from '@/app/ui/skeletons';
+import Pagination from '@/app/ui/invoices/pagination';
+import { fetchCrewMembers } from '@/app/lib/data-acfl';
+import { fetchCrewMembersPages } from '@/app/lib/data-acfl';
 
-export default function Page() {
+export default async function Page(props : {
+    searchParams?: Promise<
+        {
+            query?: string;
+            page?: string;
+        }
+    >
+}) {
+
+    const searchParams = await props.searchParams;
+    const query = searchParams?.query || '';
+    const currentPage = Number(searchParams?.page) || 1;
+    const totalPages = await fetchCrewMembersPages(query);
+
     return (
         <div>
             <div className='flex items-center justify-between gap-2 mt-4 md:mt-8'>
@@ -13,8 +29,12 @@ export default function Page() {
                 <CreateCrewMembers/>
             </div>
             <Suspense fallback={<CrewMembersTableSkeleton/>}>
-                <CrewMembersTable />
+                <CrewMembersTable query={query} currentPage={currentPage} />
             </Suspense>
+
+            <div className='mt-5 flex w-full justify-center'>
+                <Pagination totalPages={totalPages}/>
+            </div>
         </div>
     );
 }

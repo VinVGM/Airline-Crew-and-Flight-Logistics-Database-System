@@ -4,8 +4,14 @@ import { fetchCrewMembers } from '@/app/lib/data-acfl';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { DeleteCrewMember, UpdateCrewMember } from './buttons';
 
-export default async function CrewMembersTable() {
-  const crewMembers = await fetchCrewMembers();
+export default async function CrewMembersTable({
+    query,
+    currentPage,
+  }:{
+    query: string;
+    currentPage: number
+  }) {
+  const crewMembers = await fetchCrewMembers(query, currentPage);
 
 
 

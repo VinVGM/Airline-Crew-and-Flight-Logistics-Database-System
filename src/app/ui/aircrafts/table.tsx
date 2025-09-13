@@ -4,8 +4,14 @@ import { fetchAircrafts } from '@/app/lib/data-acfl';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { DeleteAircraft, UpdateAircraft } from './buttons';
-export default async function AircraftsTable() {
-  const aircrafts = await fetchAircrafts();
+export default async function AircraftsTable({
+    query,
+    currentPage,
+  }:{
+    query: string;
+    currentPage: number
+  }) {
+  const aircrafts = await fetchAircrafts(query, currentPage);
 
 
 
@@ -50,6 +56,7 @@ export default async function AircraftsTable() {
               <tr>
                 <th className="px-4 py-5 font-medium sm:pl-6">Model</th>
                 <th className="px-3 py-5 font-medium">Manufacturer</th>
+                <th className="px-3 py-5 font-medium">Aircraft Registration</th>
                 <th className="px-3 py-5 font-medium">Capacity</th>
                 <th className="px-3 py-5 font-medium">Maintenance Status</th>
                 <th className="px-3 py-5 font-medium">Created</th>
@@ -64,6 +71,7 @@ export default async function AircraftsTable() {
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">{aircraft.model}</td>
                   <td className="whitespace-nowrap px-3 py-3">{aircraft.manufacturer}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{aircraft.aircraft_reg}</td>
                   <td className="whitespace-nowrap px-3 py-3">{aircraft.capacity}</td>
                   <td className="whitespace-nowrap px-3 py-3">{aircraft.maintenance_status}</td>
                   <td className="whitespace-nowrap px-3 py-3">{aircraft.created_at}</td>

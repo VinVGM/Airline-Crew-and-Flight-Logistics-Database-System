@@ -4,7 +4,10 @@ import { Acme } from 'next/font/google';
 import Link from 'next/link';
 import Image from 'next/image';
 import { lusitana } from './ui/fonts';
+import { reset } from './lib/actions';
 export default function Page() {
+
+  // reset()
   return (
     <main className="flex min-h-screen flex-col p-6">
       <div className="flex h-40 shrink-0 items-end rounded-lg bg-[#B9375D] p-4 md:h-52">

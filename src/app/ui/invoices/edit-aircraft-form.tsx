@@ -53,6 +53,22 @@ export default function EditForm({ aircraft }: EditFormProps) {
                 </div>
 
                 <div className='mb-4'>
+                    <label htmlFor='reg' className='mb-2 block text-s, font-medium'>
+                        Enter Aircraft Registration
+                    </label>
+                    <div className='relative mt-2 rounded-md'>
+                        <input
+                            type='text'
+                            id='reg'
+                            name='reg'
+                            className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                            placeholder='Boeing'
+                            defaultValue={aircraft.aircraft_reg}
+                        />
+                    </div>
+                </div>
+
+                <div className='mb-4'>
                     <label htmlFor='capacity' className='mb-2 block text-s, font-medium'>
                         Enter Capacity
                     </label>

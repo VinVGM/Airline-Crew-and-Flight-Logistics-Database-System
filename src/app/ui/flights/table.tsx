@@ -4,8 +4,14 @@ import { fetchFlights } from '@/app/lib/data-acfl';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { DeleteFlight, UpdateFlight } from './buttons';
-export default async function FlightsTable() {
-  const flights = await fetchFlights();
+export default async function FlightsTable({
+    query,
+    currentPage,
+  }:{
+    query: string;
+    currentPage: number
+  }) {
+  const flights = await fetchFlights(query, currentPage);
 
 
 

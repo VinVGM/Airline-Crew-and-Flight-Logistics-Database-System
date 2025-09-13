@@ -4,8 +4,14 @@ import { fetchEmployees } from '@/app/lib/data-acfl';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { DeleteEmployee, UpdateEmployee } from './buttons';
-export default async function EmployeesTable() {
-  const employees = await fetchEmployees();
+export default async function EmployeesTable({
+    query,
+    currentPage,
+  }:{
+    query: string;
+    currentPage: number
+  }) {
+  const employees = await fetchEmployees(query, currentPage);
 
 
   

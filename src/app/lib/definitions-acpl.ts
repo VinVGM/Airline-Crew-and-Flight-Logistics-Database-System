@@ -26,6 +26,7 @@ export type CrewMember = {
 export type Aircraft = {
   aircraft_id: string;   // UUID
   user_id: string;       // FK -> users.id
+  aircraft_reg: string;
   model: string;
   manufacturer: string;
   capacity: number;
@@ -59,6 +60,7 @@ export type FlightSchedule = {
   user_id: string;       // FK -> users.id
   crew_id: string;       // FK -> crew.crew_id
   flight_id: string;     // FK -> flight.flight_id
+  flight_no: string;
   arrival_time: string;  // timestamp
   departure_time: string;// timestamp
   date: string;          // ISO date

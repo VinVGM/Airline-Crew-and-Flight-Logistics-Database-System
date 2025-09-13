@@ -282,14 +282,16 @@ export async function deleteCrewMember(id1: string, id2: string) {
 const aircraftSchema = z.object({
   model: z.string(),
   manufacturer: z.string(),
+  reg: z.string(),
   capacity: z.coerce.number(),
   maintenance_status: z.string(),
 })
 
 export async function createAircraft(formData : FormData){
-    const {model, manufacturer, capacity, maintenance_status} = aircraftSchema.parse({
+    const {model, manufacturer, reg, capacity, maintenance_status} = aircraftSchema.parse({
         model: formData.get('model'),
         manufacturer: formData.get('manufacturer'),
+        reg: formData.get('reg'),
         capacity: formData.get('capacity'),
         maintenance_status: formData.get('maintenance_status'),
     })
@@ -299,8 +301,8 @@ export async function createAircraft(formData : FormData){
     const { data: {user}} = await supabase.auth.getUser()
     try{
       await sql`
-          INSERT INTO aircraft (user_id, model, manufacturer, capacity, maintenance_status) 
-          VALUES (${user.id}, ${model}, ${manufacturer}, ${capacity}, ${maintenance_status})
+          INSERT INTO aircraft (user_id, model, aircraft_reg, manufacturer, capacity, maintenance_status) 
+          VALUES (${user.id}, ${model}, ${reg}, ${manufacturer}, ${capacity}, ${maintenance_status})
       `
     }catch(error){
       return `Something went wrong, Try Again. Error: ${error}`
@@ -311,9 +313,10 @@ export async function createAircraft(formData : FormData){
 }
 
 export async function updateAircraft(formData:FormData, id: string) {
-  const {model, manufacturer, capacity, maintenance_status} = aircraftSchema.parse({
+  const {model, manufacturer, reg, capacity, maintenance_status} = aircraftSchema.parse({
         model: formData.get('model'),
         manufacturer: formData.get('manufacturer'),
+        reg: formData.get('reg'),
         capacity: formData.get('capacity'),
         maintenance_status: formData.get('maintenance_status'),
     })
@@ -328,6 +331,7 @@ export async function updateAircraft(formData:FormData, id: string) {
         SET
           model = ${model},
           manufacturer = ${manufacturer},
+          aircraft_reg = ${reg},
           capacity = ${capacity},
           maintenance_status = ${maintenance_status}
         WHERE
@@ -600,3 +604,15 @@ export async function deleteFlightSchedule(id : string){
 
   revalidatePath('/dashboard/schedules');
 }
+
+
+  export async function reset() {
+    const supabaseAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+  // Update user by id (admin)
+  const { data, error } = await supabaseAdmin.auth.admin.updateUserById('62b311b6-f4b2-490e-806a-366a52f029ce', {
+    password: 'lmao1234'
+  });
+
+  console.log("done");
+  }

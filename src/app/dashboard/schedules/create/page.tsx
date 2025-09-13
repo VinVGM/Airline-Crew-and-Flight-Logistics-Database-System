@@ -7,8 +7,8 @@ import { fetchCrews, fetchFlights } from "@/app/lib/data-acfl";
 export default async function Page() {
 
     const [crews, flights] = await Promise.all([
-        fetchCrews(),
-        fetchFlights()
+        fetchCrews('', 1), // Get all crews for dropdown
+        fetchFlights('', 1) // Get all flights for dropdown
     ]);
 
     return (

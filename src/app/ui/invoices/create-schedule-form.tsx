@@ -7,7 +7,7 @@ import { useActionState } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { fetchCrews, fetchFlights } from '@/app/lib/data-acfl';
 
-export default async function Form({ crews, flights }: { crews: Crew[], flights: Flight[] }) {
+export default function Form({ crews, flights }: { crews: Crew[], flights: Flight[] }) {
 
     const [errorMessage, formAction] = useActionState(
         async (_state: string | undefined, formData : FormData) => {

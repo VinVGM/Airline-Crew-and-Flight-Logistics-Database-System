@@ -8,8 +8,8 @@ import { fetchAircrafts, fetchAirports } from "@/app/lib/data-acfl";
 export default async function Page() {
 
     const [aircrafts, airports] = await Promise.all([
-        fetchAircrafts(),
-        fetchAirports()
+        fetchAircrafts('', 1), // Get all aircrafts for dropdown
+        fetchAirports('', 1)   // Get all airports for dropdown
     ]);
 
     return (

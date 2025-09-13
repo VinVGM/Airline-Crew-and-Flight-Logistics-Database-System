@@ -12,8 +12,8 @@ export default async function Page(props: { params: Promise<{ id: string }>}) {
 
     const [data, aircrafts, airports] = await Promise.all([
         fetchFlightById(id),
-        fetchAircrafts(),
-        fetchAirports()
+        fetchAircrafts('', 1), // Get all aircrafts for dropdown
+        fetchAirports('', 1)   // Get all airports for dropdown
     ]);
     
     const flight = data[0]
