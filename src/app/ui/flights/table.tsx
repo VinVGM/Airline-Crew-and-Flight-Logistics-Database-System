@@ -33,6 +33,7 @@ export default async function FlightsTable() {
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
+          {/* Mobile View */}
           <div className="md:hidden">
             {flights?.map((flight) => (
               <div
@@ -43,6 +44,9 @@ export default async function FlightsTable() {
                   <div>
                     <p className="font-medium">{flight.flight_no}</p>
                     <p className="text-sm text-gray-500">{flight.status}</p>
+                    <p className="text-xs text-gray-400">
+                      Flight ID: {flight.flight_id}
+                    </p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-400">
@@ -74,10 +78,13 @@ export default async function FlightsTable() {
               </div>
             ))}
           </div>
+
+          {/* Desktop View */}
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
-                <th className="px-4 py-5 font-medium sm:pl-6">Flight No</th>
+                <th className="px-4 py-5 font-medium sm:pl-6">Flight ID</th>
+                <th className="px-3 py-5 font-medium">Flight No</th>
                 <th className="px-3 py-5 font-medium">Status</th>
                 <th className="px-3 py-5 font-medium">Aircraft</th>
                 <th className="px-3 py-5 font-medium">From</th>
@@ -90,9 +97,14 @@ export default async function FlightsTable() {
               {flights?.map((flight) => (
                 <tr
                   key={flight.flight_id}
-                  className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
+                  className="w-full border-b py-3 text-sm last-of-type:border-none 
+                    [&:first-child>td:first-child]:rounded-tl-lg 
+                    [&:first-child>td:last-child]:rounded-tr-lg 
+                    [&:last-child>td:first-child]:rounded-bl-lg 
+                    [&:last-child>td:last-child]:rounded-br-lg"
                 >
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">{flight.flight_no}</td>
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3">{flight.flight_id}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{flight.flight_no}</td>
                   <td className="whitespace-nowrap px-3 py-3">{flight.status}</td>
                   <td className="whitespace-nowrap px-3 py-3">{flight.aircraft_id}</td>
                   <td className="whitespace-nowrap px-3 py-3">{flight.origin_airport_id}</td>

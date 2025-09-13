@@ -11,6 +11,10 @@ import { redirect } from 'next/navigation';
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require'});
 
 
+
+
+// Employee 
+
 const employeeSchema = z.object({
   name: z.string(),
   designation: z.string(),
@@ -18,9 +22,6 @@ const employeeSchema = z.object({
   license_number: z.string(),
   experience: z.coerce.number(),
 })
-
-
-
 
 
 export async function createEmployee(formData : FormData){
@@ -52,6 +53,7 @@ export async function createEmployee(formData : FormData){
 
     
 }
+
 
 export async function updateEmployee(formData:FormData, id: string) {
   const {name, designation, dob, license_number, experience} = employeeSchema.parse({
@@ -108,6 +110,9 @@ export async function deleteEmployee(id : string){
   revalidatePath('/dashboard/employees');
 }
 
+
+
+// Crew
 
 const crewSchema = z.object({
   name : z.string()
