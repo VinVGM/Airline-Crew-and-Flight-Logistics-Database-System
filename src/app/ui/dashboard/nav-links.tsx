@@ -22,6 +22,7 @@ const links = [
   { name: 'Flights', href: '/dashboard/flights', icon: UserGroupIcon },
   { name: 'Aircrafts', href: '/dashboard/aircrafts', icon: UserGroupIcon },
   { name: 'Schedules', href: '/dashboard/schedules', icon: UserGroupIcon },
+  { name: 'Airports', href: '/dashboard/airports', icon: UserGroupIcon },
   
 ];
 

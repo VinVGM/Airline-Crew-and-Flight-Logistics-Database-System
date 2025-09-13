@@ -2,15 +2,19 @@
 
 import { Button } from '@/app/ui/button';
 import Link from 'next/link';
-import { createAirport } from '@/app/lib/actions';
+import { updateAircraft } from '@/app/lib/actions';
 import { useActionState } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { Aircraft } from '@/app/lib/definitions-acpl';
 
+interface EditFormProps {
+    aircraft: Aircraft;
+}
 
-export default function Form() {
+export default function EditForm({ aircraft }: EditFormProps) {
     const [errorMessage, formAction] = useActionState(
         async (_state: string | undefined, formData : FormData) => {
-            return await createAirport(formData);
+            return await updateAircraft(formData, aircraft.aircraft_id);
         },
         undefined
     )
@@ -18,75 +22,81 @@ export default function Form() {
         <form action={formAction}>
             <div className='rounded-md bg-gray-50 p-4 md:p-6'>
                 <div className='mb-4'>
-                    <label htmlFor='code' className='mb-2 block text-s, font-medium'>
-                        Enter Airport Code
+                    <label htmlFor='model' className='mb-2 block text-s, font-medium'>
+                        Enter Model
                     </label>
                     <div className='relative mt-2 rounded-md'>
                         <input
                             type='text'
-                            id='code'
-                            name='code'
+                            id='model'
+                            name='model'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
-                            placeholder='JFK'
-                            maxLength={3}
+                            placeholder='Boeing 737'
+                            defaultValue={aircraft.model}
                         />
                     </div>
                 </div>
                 <div className='mb-4'>
-                    <label htmlFor='name' className='mb-2 block text-s, font-medium'>
-                        Enter Airport Name
+                    <label htmlFor='manufacturer' className='mb-2 block text-s, font-medium'>
+                        Enter Manufacturer
                     </label>
                     <div className='relative mt-2 rounded-md'>
                         <input
                             type='text'
-                            id='name'
-                            name='name'
+                            id='manufacturer'
+                            name='manufacturer'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
-                            placeholder='John F. Kennedy International Airport'
+                            placeholder='Boeing'
+                            defaultValue={aircraft.manufacturer}
                         />
                     </div>
                 </div>
 
                 <div className='mb-4'>
-                    <label htmlFor='city' className='mb-2 block text-s, font-medium'>
-                        Enter City
+                    <label htmlFor='capacity' className='mb-2 block text-s, font-medium'>
+                        Enter Capacity
                     </label>
                     <div className='relative mt-2 rounded-md'>
                         <input
-                            type='text'
-                            id='city'
-                            name='city'
+                            type='number'
+                            id='capacity'
+                            name='capacity'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
-                            placeholder='New York'
+                            placeholder='150'
+                            defaultValue={aircraft.capacity}
                             required
                         />
                     </div>
                 </div>
 
                 <div className='mb-4'>
-                    <label htmlFor='country' className='mb-2 block text-s, font-medium'>
-                        Enter Country
+                    <label htmlFor='maintenance_status' className='mb-2 block text-s, font-medium'>
+                        Enter Maintenance Status
                     </label>
                     <div className='relative mt-2 rounded-md'>
-                        <input
-                            type='text'
-                            id='country'
-                            name='country'
+                        <select
+                            id='maintenance_status'
+                            name='maintenance_status'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
-                            placeholder='United States'
+                            defaultValue={aircraft.maintenance_status}
                             required
-                        />
+                        >
+                            <option value="">Select Status</option>
+                            <option value="Operational">Operational</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Out of Service">Out of Service</option>
+                        </select>
                     </div>
                 </div>
 
                 <div className='flex justify-end gap-4 mt-6'>
                     <Link
-                        href= "/dashboard/airports"
+                        href= "/dashboard/aircrafts"
                         className='flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200'
                     >
                         Cancel
                     </Link>
-                    <Button type='submit'>Create Airport</Button>
+                    <Button type='submit'>Update Aircraft</Button>
                 </div>
 
                 <div className='flex h-8 items-end space-x-1'>

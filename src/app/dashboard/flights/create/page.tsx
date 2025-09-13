@@ -3,17 +3,25 @@ import Form from "@/app/ui/invoices/create-flight-form";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import { Suspense } from "react";
 import { FormSkeleton } from "@/app/ui/skeletons";
-export default function Page() {
+import { fetchAircrafts, fetchAirports } from "@/app/lib/data-acfl";
+
+export default async function Page() {
+
+    const [aircrafts, airports] = await Promise.all([
+        fetchAircrafts(),
+        fetchAirports()
+    ]);
+
     return (
         <main>
             <Breadcrumbs
                 breadcrumbs={[
                     { label: "Flights", href: "/dashboard/flights" },
-                    { label: "Create Flight", href: "/dashboard/employees/flights", active: true },
+                    { label: "Create Flight", href: "/dashboard/flights/create", active: true },
                 ]}
             />
             <Suspense fallback={<FormSkeleton />}>
-                 <Form/>
+                 <Form aircrafts={aircrafts} airports={airports} />
             </Suspense>
         </main>
     );

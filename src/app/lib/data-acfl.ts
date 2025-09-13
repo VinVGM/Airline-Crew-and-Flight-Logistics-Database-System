@@ -183,8 +183,32 @@ export async function fetchCrewMemberById(id1: string, id2: string) {
 
 export async function fetchAircrafts(){
     try{
-        const data = await sql<Aircraft[]>`SELECT * FROM aircraft`;
-        return data;
+        const supabase = await createClient();
+
+        const { data: { user }} = await supabase.auth.getUser()
+        const data = await sql<Aircraft[]>`SELECT * FROM aircraft where user_id = ${user.id}`;
+        
+        return data.map(aircraft => ({
+            ...aircraft,
+            created_at: aircraft.created_at instanceof Date ? aircraft.created_at.toISOString().split('T')[0] : aircraft.created_at,
+        }));
+
+    }catch(error){
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch aircraft data.');
+    }
+}
+
+export async function fetchAircraftById(id: string){
+    const supabase = await createClient();
+
+    const { data: { user }} = await supabase.auth.getUser()
+    try{
+        const data = await sql<Aircraft[]>`SELECT * FROM aircraft where aircraft_id=${id} AND user_id=${user.id};`
+        return data.map(aircraft => ({
+            ...aircraft,
+            created_at: aircraft.created_at instanceof Date ? aircraft.created_at.toISOString().split('T')[0] : aircraft.created_at,
+        }));
     }catch(error){
         console.error('Database Error:', error);
         throw new Error('Failed to fetch aircraft data.');
@@ -194,8 +218,32 @@ export async function fetchAircrafts(){
 
 export async function fetchAirports(){
     try{
-        const data = await sql<Airport[]>`SELECT * FROM airport`;
-        return data;
+        const supabase = await createClient();
+
+        const { data: { user }} = await supabase.auth.getUser()
+        const data = await sql<Airport[]>`SELECT * FROM airport where user_id = ${user.id}`;
+        
+        return data.map(airport => ({
+            ...airport,
+            created_at: airport.created_at instanceof Date ? airport.created_at.toISOString().split('T')[0] : airport.created_at,
+        }));
+
+    }catch(error){
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch airport data.');
+    }
+}
+
+export async function fetchAirportById(id: string){
+    const supabase = await createClient();
+
+    const { data: { user }} = await supabase.auth.getUser()
+    try{
+        const data = await sql<Airport[]>`SELECT * FROM airport where airport_id=${id} AND user_id=${user.id};`
+        return data.map(airport => ({
+            ...airport,
+            created_at: airport.created_at instanceof Date ? airport.created_at.toISOString().split('T')[0] : airport.created_at,
+        }));
     }catch(error){
         console.error('Database Error:', error);
         throw new Error('Failed to fetch airport data.');
@@ -204,8 +252,32 @@ export async function fetchAirports(){
 
 export async function fetchFlights(){
     try{
-        const data = await sql<Flight[]>`SELECT * FROM flight`;
-        return data;
+        const supabase = await createClient();
+
+        const { data: { user }} = await supabase.auth.getUser()
+        const data = await sql<Flight[]>`SELECT * FROM flight where user_id = ${user.id}`;
+        
+        return data.map(flight => ({
+            ...flight,
+            created_at: flight.created_at instanceof Date ? flight.created_at.toISOString().split('T')[0] : flight.created_at,
+        }));
+
+    }catch(error){
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch flight data.');
+    }
+}
+
+export async function fetchFlightById(id: string){
+    const supabase = await createClient();
+
+    const { data: { user }} = await supabase.auth.getUser()
+    try{
+        const data = await sql<Flight[]>`SELECT * FROM flight where flight_id=${id} AND user_id=${user.id};`
+        return data.map(flight => ({
+            ...flight,
+            created_at: flight.created_at instanceof Date ? flight.created_at.toISOString().split('T')[0] : flight.created_at,
+        }));
     }catch(error){
         console.error('Database Error:', error);
         throw new Error('Failed to fetch flight data.');
@@ -213,8 +285,38 @@ export async function fetchFlights(){
 }
 export async function fetchFlightSchedules(){
     try{
-        const data = await sql<FlightSchedule[]>`SELECT * FROM flight_schedule`;
-        return data;
+        const supabase = await createClient();
+
+        const { data: { user }} = await supabase.auth.getUser()
+        const data = await sql<FlightSchedule[]>`SELECT * FROM flight_schedule where user_id = ${user.id}`;
+        
+        return data.map(schedule => ({
+            ...schedule,
+            arrival_time: schedule.arrival_time instanceof Date ? schedule.arrival_time.toISOString().split('T')[0] + ' ' + schedule.arrival_time.toTimeString().split(' ')[0] : schedule.arrival_time,
+            departure_time: schedule.departure_time instanceof Date ? schedule.departure_time.toISOString().split('T')[0] + ' ' + schedule.departure_time.toTimeString().split(' ')[0] : schedule.departure_time,
+            date: schedule.date instanceof Date ? schedule.date.toISOString().split('T')[0] : schedule.date,
+            created_at: schedule.created_at instanceof Date ? schedule.created_at.toISOString().split('T')[0] : schedule.created_at,
+        }));
+
+    }catch(error){
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch flight schedule data.');
+    }
+}
+
+export async function fetchFlightScheduleById(id: string){
+    const supabase = await createClient();
+
+    const { data: { user }} = await supabase.auth.getUser()
+    try{
+        const data = await sql<FlightSchedule[]>`SELECT * FROM flight_schedule where schedule_id=${id} AND user_id=${user.id};`
+        return data.map(schedule => ({
+            ...schedule,
+            arrival_time: schedule.arrival_time instanceof Date ? schedule.arrival_time.toISOString().split('T')[0] + ' ' + schedule.arrival_time.toTimeString().split(' ')[0] : schedule.arrival_time,
+            departure_time: schedule.departure_time instanceof Date ? schedule.departure_time.toISOString().split('T')[0] + ' ' + schedule.departure_time.toTimeString().split(' ')[0] : schedule.departure_time,
+            date: schedule.date instanceof Date ? schedule.date.toISOString().split('T')[0] : schedule.date,
+            created_at: schedule.created_at instanceof Date ? schedule.created_at.toISOString().split('T')[0] : schedule.created_at,
+        }));
     }catch(error){
         console.error('Database Error:', error);
         throw new Error('Failed to fetch flight schedule data.');

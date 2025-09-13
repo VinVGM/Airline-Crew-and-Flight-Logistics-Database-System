@@ -1,6 +1,8 @@
 import Search from "@/app/ui/search";
 import CrewsTable from "@/app/ui/crews/table";
 import { CreateCrew } from "@/app/ui/crews/buttons";
+import { Suspense } from "react";
+import { CrewsTableSkeleton } from "@/app/ui/skeletons";
 
 export default function Page() {
     return (
@@ -9,7 +11,9 @@ export default function Page() {
                 <Search placeholder='Search Crew'/>
                 <CreateCrew/>
             </div>
-            <CrewsTable />
+            <Suspense fallback={<CrewsTableSkeleton/>}>
+                <CrewsTable />
+            </Suspense>
         </div>
     );
 }

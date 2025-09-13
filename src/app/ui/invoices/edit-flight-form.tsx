@@ -2,16 +2,21 @@
 
 import { Button } from '@/app/ui/button';
 import Link from 'next/link';
-import { createFlight } from '@/app/lib/actions';
+import { updateFlight } from '@/app/lib/actions';
 import { useActionState } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
-import { Aircraft, Airport } from '@/app/lib/definitions-acpl';
+import { Flight, Aircraft, Airport } from '@/app/lib/definitions-acpl';
+interface EditFormProps {
+    flight: Flight;
+    aircrafts: Aircraft[];
+    airports: Airport[];
+}
 
-export default function Form({ aircrafts, airports }: { aircrafts: Aircraft[], airports: Airport[] }) {
+export default function EditForm({ flight, aircrafts, airports }: EditFormProps) {
 
     const [errorMessage, formAction] = useActionState(
         async (_state: string | undefined, formData : FormData) => {
-            return await createFlight(formData);
+            return await updateFlight(formData, flight.flight_id);
         },
         undefined
     )
@@ -29,6 +34,7 @@ export default function Form({ aircrafts, airports }: { aircrafts: Aircraft[], a
                             name='flight_no'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
                             placeholder='AA123'
+                            defaultValue={flight.flight_no}
                             required
                         />
                     </div>
@@ -42,6 +48,7 @@ export default function Form({ aircrafts, airports }: { aircrafts: Aircraft[], a
                             id='status'
                             name='status'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                            defaultValue={flight.status}
                             required
                         >
                             <option value="">Select Status</option>
@@ -65,6 +72,7 @@ export default function Form({ aircrafts, airports }: { aircrafts: Aircraft[], a
                             id='aircraft_id'
                             name='aircraft_id'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                            defaultValue={flight.aircraft_id}
                             required
                         >
                             <option value="">Select Aircraft</option>
@@ -86,6 +94,7 @@ export default function Form({ aircrafts, airports }: { aircrafts: Aircraft[], a
                             id='origin_airport_id'
                             name='origin_airport_id'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                            defaultValue={flight.origin_airport_id}
                             required
                         >
                             <option value="">Select Origin Airport</option>
@@ -107,6 +116,7 @@ export default function Form({ aircrafts, airports }: { aircrafts: Aircraft[], a
                             id='destination_airport_id'
                             name='destination_airport_id'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                            defaultValue={flight.destination_airport_id}
                             required
                         >
                             <option value="">Select Destination Airport</option>
@@ -126,7 +136,7 @@ export default function Form({ aircrafts, airports }: { aircrafts: Aircraft[], a
                     >
                         Cancel
                     </Link>
-                    <Button type='submit'>Create Flight</Button>
+                    <Button type='submit'>Update Flight</Button>
                 </div>
 
                 <div className='flex h-8 items-end space-x-1'>

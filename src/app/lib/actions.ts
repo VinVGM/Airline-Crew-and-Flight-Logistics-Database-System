@@ -276,3 +276,327 @@ export async function deleteCrewMember(id1: string, id2: string) {
 
   revalidatePath("/dashboard/crews");
 }
+
+// Aircraft
+
+const aircraftSchema = z.object({
+  model: z.string(),
+  manufacturer: z.string(),
+  capacity: z.coerce.number(),
+  maintenance_status: z.string(),
+})
+
+export async function createAircraft(formData : FormData){
+    const {model, manufacturer, capacity, maintenance_status} = aircraftSchema.parse({
+        model: formData.get('model'),
+        manufacturer: formData.get('manufacturer'),
+        capacity: formData.get('capacity'),
+        maintenance_status: formData.get('maintenance_status'),
+    })
+
+    const supabase = await createClient();
+
+    const { data: {user}} = await supabase.auth.getUser()
+    try{
+      await sql`
+          INSERT INTO aircraft (user_id, model, manufacturer, capacity, maintenance_status) 
+          VALUES (${user.id}, ${model}, ${manufacturer}, ${capacity}, ${maintenance_status})
+      `
+    }catch(error){
+      return `Something went wrong, Try Again. Error: ${error}`
+    }
+    
+    revalidatePath('/dashboard/aircrafts')
+    redirect('/dashboard/aircrafts')
+}
+
+export async function updateAircraft(formData:FormData, id: string) {
+  const {model, manufacturer, capacity, maintenance_status} = aircraftSchema.parse({
+        model: formData.get('model'),
+        manufacturer: formData.get('manufacturer'),
+        capacity: formData.get('capacity'),
+        maintenance_status: formData.get('maintenance_status'),
+    })
+
+    const supabase = await createClient();
+
+    const { data: {user}} = await supabase.auth.getUser();
+
+    try{
+      await sql`
+        Update aircraft
+        SET
+          model = ${model},
+          manufacturer = ${manufacturer},
+          capacity = ${capacity},
+          maintenance_status = ${maintenance_status}
+        WHERE
+        user_id = ${user.id} AND aircraft_id = ${id}
+      `
+      
+    }catch(error){
+      return `Something went Wrong! Error: ${error} `
+    }
+
+    revalidatePath('/dashboard/aircrafts')
+    redirect('/dashboard/aircrafts')
+}
+
+export async function deleteAircraft(id : string){
+  const supabase = await createClient();
+
+  const { data: {user}} = await supabase.auth.getUser();
+  
+  
+  await sql `
+    DELETE FROM aircraft
+    where user_id = ${user.id} and aircraft_id = ${id};
+  `
+
+  revalidatePath('/dashboard/aircrafts');
+}
+
+// Airport
+
+const airportSchema = z.object({
+  code: z.string(),
+  name: z.string(),
+  city: z.string(),
+  country: z.string(),
+})
+
+export async function createAirport(formData : FormData){
+    const {code, name, city, country} = airportSchema.parse({
+        code: formData.get('code'),
+        name: formData.get('name'),
+        city: formData.get('city'),
+        country: formData.get('country'),
+    })
+
+    const supabase = await createClient();
+
+    const { data: {user}} = await supabase.auth.getUser()
+    try{
+      await sql`
+          INSERT INTO airport (user_id, code, name, city, country) 
+          VALUES (${user.id}, ${code}, ${name}, ${city}, ${country})
+      `
+    }catch(error){
+      return `Something went wrong, Try Again. Error: ${error}`
+    }
+    
+    revalidatePath('/dashboard/airports')
+    redirect('/dashboard/airports')
+}
+
+export async function updateAirport(formData:FormData, id: string) {
+  const {code, name, city, country} = airportSchema.parse({
+        code: formData.get('code'),
+        name: formData.get('name'),
+        city: formData.get('city'),
+        country: formData.get('country'),
+    })
+
+    const supabase = await createClient();
+
+    const { data: {user}} = await supabase.auth.getUser();
+
+    try{
+      await sql`
+        Update airport
+        SET
+          code = ${code},
+          name = ${name},
+          city = ${city},
+          country = ${country}
+        WHERE
+        user_id = ${user.id} AND airport_id = ${id}
+      `
+      
+    }catch(error){
+      return `Something went Wrong! Error: ${error} `
+    }
+
+    revalidatePath('/dashboard/airports')
+    redirect('/dashboard/airports')
+}
+
+export async function deleteAirport(id : string){
+  const supabase = await createClient();
+
+  const { data: {user}} = await supabase.auth.getUser();
+  
+  
+  await sql `
+    DELETE FROM airport
+    where user_id = ${user.id} and airport_id = ${id};
+  `
+
+  revalidatePath('/dashboard/airports');
+}
+
+// Flight
+
+const flightSchema = z.object({
+  flight_no: z.string(),
+  status: z.string(),
+  aircraft_id: z.string(),
+  origin_airport_id: z.string(),
+  destination_airport_id: z.string(),
+})
+
+export async function createFlight(formData : FormData){
+    const {flight_no, status, aircraft_id, origin_airport_id, destination_airport_id} = flightSchema.parse({
+        flight_no: formData.get('flight_no'),
+        status: formData.get('status'),
+        aircraft_id: formData.get('aircraft_id'),
+        origin_airport_id: formData.get('origin_airport_id'),
+        destination_airport_id: formData.get('destination_airport_id'),
+    })
+
+    const supabase = await createClient();
+
+    const { data: {user}} = await supabase.auth.getUser()
+    try{
+      await sql`
+          INSERT INTO flight (user_id, flight_no, status, aircraft_id, origin_airport_id, destination_airport_id) 
+          VALUES (${user.id}, ${flight_no}, ${status}, ${aircraft_id}, ${origin_airport_id}, ${destination_airport_id})
+      `
+    }catch(error){
+      return `Something went wrong, Try Again. Error: ${error}`
+    }
+    
+    revalidatePath('/dashboard/flights')
+    redirect('/dashboard/flights')
+}
+
+export async function updateFlight(formData:FormData, id: string) {
+  const {flight_no, status, aircraft_id, origin_airport_id, destination_airport_id} = flightSchema.parse({
+        flight_no: formData.get('flight_no'),
+        status: formData.get('status'),
+        aircraft_id: formData.get('aircraft_id'),
+        origin_airport_id: formData.get('origin_airport_id'),
+        destination_airport_id: formData.get('destination_airport_id'),
+    })
+
+    const supabase = await createClient();
+
+    const { data: {user}} = await supabase.auth.getUser();
+
+    try{
+      await sql`
+        Update flight
+        SET
+          flight_no = ${flight_no},
+          status = ${status},
+          aircraft_id = ${aircraft_id},
+          origin_airport_id = ${origin_airport_id},
+          destination_airport_id = ${destination_airport_id}
+        WHERE
+        user_id = ${user.id} AND flight_id = ${id}
+      `
+      
+    }catch(error){
+      return `Something went Wrong! Error: ${error} `
+    }
+
+    revalidatePath('/dashboard/flights')
+    redirect('/dashboard/flights')
+}
+
+export async function deleteFlight(id : string){
+  const supabase = await createClient();
+
+  const { data: {user}} = await supabase.auth.getUser();
+  
+  
+  await sql `
+    DELETE FROM flight
+    where user_id = ${user.id} and flight_id = ${id};
+  `
+
+  revalidatePath('/dashboard/flights');
+}
+
+// Flight Schedule
+
+const flightScheduleSchema = z.object({
+  crew_id: z.string(),
+  flight_id: z.string(),
+  arrival_time: z.string(),
+  departure_time: z.string(),
+  date: z.string(),
+})
+
+export async function createFlightSchedule(formData : FormData){
+    const {crew_id, flight_id, arrival_time, departure_time, date} = flightScheduleSchema.parse({
+        crew_id: formData.get('crew_id'),
+        flight_id: formData.get('flight_id'),
+        arrival_time: formData.get('arrival_time'),
+        departure_time: formData.get('departure_time'),
+        date: formData.get('date'),
+    })
+
+    const supabase = await createClient();
+
+    const { data: {user}} = await supabase.auth.getUser()
+    try{
+      await sql`
+          INSERT INTO flight_schedule (user_id, crew_id, flight_id, arrival_time, departure_time, date) 
+          VALUES (${user.id}, ${crew_id}, ${flight_id}, ${arrival_time}, ${departure_time}, ${date})
+      `
+    }catch(error){
+      return `Something went wrong, Try Again. Error: ${error}`
+    }
+    
+    revalidatePath('/dashboard/schedules')
+    redirect('/dashboard/schedules')
+}
+
+export async function updateFlightSchedule(formData:FormData, id: string) {
+  const {crew_id, flight_id, arrival_time, departure_time, date} = flightScheduleSchema.parse({
+        crew_id: formData.get('crew_id'),
+        flight_id: formData.get('flight_id'),
+        arrival_time: formData.get('arrival_time'),
+        departure_time: formData.get('departure_time'),
+        date: formData.get('date'),
+    })
+
+    const supabase = await createClient();
+
+    const { data: {user}} = await supabase.auth.getUser();
+
+    try{
+      await sql`
+        Update flight_schedule
+        SET
+          crew_id = ${crew_id},
+          flight_id = ${flight_id},
+          arrival_time = ${arrival_time},
+          departure_time = ${departure_time},
+          date = ${date}
+        WHERE
+        user_id = ${user.id} AND schedule_id = ${id}
+      `
+      
+    }catch(error){
+      return `Something went Wrong! Error: ${error} `
+    }
+
+    revalidatePath('/dashboard/schedules')
+    redirect('/dashboard/schedules')
+}
+
+export async function deleteFlightSchedule(id : string){
+  const supabase = await createClient();
+
+  const { data: {user}} = await supabase.auth.getUser();
+  
+  
+  await sql `
+    DELETE FROM flight_schedule
+    where user_id = ${user.id} and schedule_id = ${id};
+  `
+
+  revalidatePath('/dashboard/schedules');
+}

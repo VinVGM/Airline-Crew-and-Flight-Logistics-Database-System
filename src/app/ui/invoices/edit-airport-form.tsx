@@ -2,15 +2,19 @@
 
 import { Button } from '@/app/ui/button';
 import Link from 'next/link';
-import { createAirport } from '@/app/lib/actions';
+import { updateAirport } from '@/app/lib/actions';
 import { useActionState } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { Airport } from '@/app/lib/definitions-acpl';
 
+interface EditFormProps {
+    airport: Airport;
+}
 
-export default function Form() {
+export default function EditForm({ airport }: EditFormProps) {
     const [errorMessage, formAction] = useActionState(
         async (_state: string | undefined, formData : FormData) => {
-            return await createAirport(formData);
+            return await updateAirport(formData, airport.airport_id);
         },
         undefined
     )
@@ -29,6 +33,7 @@ export default function Form() {
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
                             placeholder='JFK'
                             maxLength={3}
+                            defaultValue={airport.code}
                         />
                     </div>
                 </div>
@@ -43,6 +48,7 @@ export default function Form() {
                             name='name'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
                             placeholder='John F. Kennedy International Airport'
+                            defaultValue={airport.name}
                         />
                     </div>
                 </div>
@@ -58,6 +64,7 @@ export default function Form() {
                             name='city'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
                             placeholder='New York'
+                            defaultValue={airport.city}
                             required
                         />
                     </div>
@@ -74,6 +81,7 @@ export default function Form() {
                             name='country'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
                             placeholder='United States'
+                            defaultValue={airport.country}
                             required
                         />
                     </div>
@@ -86,7 +94,7 @@ export default function Form() {
                     >
                         Cancel
                     </Link>
-                    <Button type='submit'>Create Airport</Button>
+                    <Button type='submit'>Update Airport</Button>
                 </div>
 
                 <div className='flex h-8 items-end space-x-1'>

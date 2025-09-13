@@ -2,6 +2,8 @@ import CrewMembersTable from '@/app/ui/crew-members/table';
 import {CreateCrewMembers } from '@/app/ui/crews/buttons';
 
 import Search from '@/app/ui/search';
+import { Suspense } from 'react';
+import { CrewMembersTableSkeleton } from '@/app/ui/skeletons';
 
 export default function Page() {
     return (
@@ -10,7 +12,9 @@ export default function Page() {
                 <Search placeholder='Search Crew Members'/>
                 <CreateCrewMembers/>
             </div>
-            <CrewMembersTable />
+            <Suspense fallback={<CrewMembersTableSkeleton/>}>
+                <CrewMembersTable />
+            </Suspense>
         </div>
     );
 }

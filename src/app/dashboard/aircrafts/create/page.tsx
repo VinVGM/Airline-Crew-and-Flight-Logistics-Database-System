@@ -9,7 +9,7 @@ export default function Page() {
             <Breadcrumbs
                 breadcrumbs={[
                     { label: "Aircrafts", href: "/dashboard/aircrafts" },
-                    { label: "Create Aircraft", href: "/dashboard/employees/aircrafts", active: true },
+                    { label: "Create Aircraft", href: "/dashboard/aircrafts/create", active: true },
                 ]}
             />
             <Suspense fallback={<FormSkeleton />}>

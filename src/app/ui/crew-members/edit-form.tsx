@@ -116,7 +116,7 @@ export default function Form({crews, employees, crew_member} : {crews: Crew[], e
             >
               Cancel
             </Link>
-            <Button type="submit">Create Employee</Button>
+            <Button type="submit">Create Crew Member</Button>
           </div>
 
           <div className="flex h-8 items-end space-x-1">

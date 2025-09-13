@@ -2,32 +2,10 @@ import { FlightSchedule } from '@/app/lib/definitions-acpl';
 import { fetchFlightSchedules } from '@/app/lib/data-acfl';
 
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { DeleteSchedule, UpdateSchedule } from './buttons';
 
 export default async function FlightSchedulesTable() {
-  // const schedules: FlightSchedule[] = await fetchFlightSchedules();
-
-  const schedules: FlightSchedule[] = [
-    {
-      schedule_id: '1',
-      user_id: '1',
-      crew_id: 'C1',
-      flight_id: 'F1',
-      arrival_time: '2024-09-10 T 18:30:00',
-      departure_time: '2024-09-10 T 15:00:00',
-      date: '2024-09-10',
-      created_at: '2024-09-01',
-    },
-    {
-      schedule_id: '2',
-      user_id: '2',
-      crew_id: 'C2',
-      flight_id: 'F2',
-      arrival_time: '2024-09-11 T 22:00:00',
-      departure_time: '2024-09-11 T 19:00:00',
-      date: '2024-09-11',
-      created_at: '2024-09-02',
-    },
-  ];
+  const schedules: FlightSchedule[] = await fetchFlightSchedules();
 
   return (
     <div className="mt-6 flow-root">
@@ -64,12 +42,8 @@ export default async function FlightSchedulesTable() {
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    <button className="text-blue-600 hover:text-blue-800" title="Update">
-                      <PencilSquareIcon className="h-5 w-5" />
-                    </button>
-                    <button className="text-red-600 hover:text-red-800" title="Delete">
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
+                    <UpdateSchedule id={schedule.schedule_id}/>
+                    <DeleteSchedule id={schedule.schedule_id}/>
                   </div>
                 </div>
               </div>
@@ -102,12 +76,8 @@ export default async function FlightSchedulesTable() {
                   <td className="whitespace-nowrap px-3 py-3">{schedule.created_at}</td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <div className="flex gap-2">
-                      <button className="text-blue-600 hover:text-blue-800" title="Update">
-                        <PencilSquareIcon className="h-5 w-5" />
-                      </button>
-                      <button className="text-red-600 hover:text-red-800" title="Delete">
-                        <TrashIcon className="h-5 w-5" />
-                      </button>
+                      <UpdateSchedule id={schedule.schedule_id}/>
+                      <DeleteSchedule id={schedule.schedule_id}/>
                     </div>
                   </td>
                 </tr>

@@ -2,16 +2,23 @@
 
 import { Button } from '@/app/ui/button';
 import Link from 'next/link';
-import { createFlightSchedule } from '@/app/lib/actions';
+import { updateFlightSchedule } from '@/app/lib/actions';
 import { useActionState } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
-import { fetchCrews, fetchFlights } from '@/app/lib/data-acfl';
+import { FlightSchedule } from '@/app/lib/definitions-acpl';
+import { Crew, Flight } from '@/app/lib/definitions-acpl';
 
-export default async function Form({ crews, flights }: { crews: Crew[], flights: Flight[] }) {
+interface EditFormProps {
+    schedule: FlightSchedule;
+    crews: Crew[];
+    flights: Flight[];
+}
+
+export default function EditForm({ schedule, crews, flights }: EditFormProps) {
 
     const [errorMessage, formAction] = useActionState(
         async (_state: string | undefined, formData : FormData) => {
-            return await createFlightSchedule(formData);
+            return await updateFlightSchedule(formData, schedule.schedule_id);
         },
         undefined
     )
@@ -27,6 +34,7 @@ export default async function Form({ crews, flights }: { crews: Crew[], flights:
                             id='crew_id'
                             name='crew_id'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                            defaultValue={schedule.crew_id}
                             required
                         >
                             <option value="">Select Crew</option>
@@ -47,6 +55,7 @@ export default async function Form({ crews, flights }: { crews: Crew[], flights:
                             id='flight_id'
                             name='flight_id'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                            defaultValue={schedule.flight_id}
                             required
                         >
                             <option value="">Select Flight</option>
@@ -69,6 +78,7 @@ export default async function Form({ crews, flights }: { crews: Crew[], flights:
                             id='date'
                             name='date'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                            defaultValue={schedule.date}
                             required
                         />
                     </div>
@@ -84,6 +94,7 @@ export default async function Form({ crews, flights }: { crews: Crew[], flights:
                             id='departure_time'
                             name='departure_time'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                            defaultValue={schedule.departure_time}
                             required
                         />
                     </div>
@@ -99,6 +110,7 @@ export default async function Form({ crews, flights }: { crews: Crew[], flights:
                             id='arrival_time'
                             name='arrival_time'
                             className='block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                            defaultValue={schedule.arrival_time}
                             required
                         />
                     </div>
@@ -111,7 +123,7 @@ export default async function Form({ crews, flights }: { crews: Crew[], flights:
                     >
                         Cancel
                     </Link>
-                    <Button type='submit'>Create Schedule</Button>
+                    <Button type='submit'>Update Schedule</Button>
                 </div>
 
                 <div className='flex h-8 items-end space-x-1'>
