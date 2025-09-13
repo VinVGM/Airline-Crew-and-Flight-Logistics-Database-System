@@ -17,9 +17,10 @@ export type Crew = {
 };
 
 export type CrewMember = {
-  crew_id: string;       // FK -> crew.crew_id
-  employee_id: string;   // FK -> employee.employee_id
+  crew_id: string; // FK -> crew.crew_id
+  employee_id: string; // FK -> employee.employee_id
   role: string;
+  user_id: string;
 };
 
 export type Aircraft = {
@@ -62,4 +63,13 @@ export type FlightSchedule = {
   departure_time: string;// timestamp
   date: string;          // ISO date
   created_at: string;
+};
+
+export type CrewOverall = {
+  crew_id: string;  
+  employee_id: string; 
+  role: string;
+  user_id: string;
+  crew_name: string;
+  name: string;
 };

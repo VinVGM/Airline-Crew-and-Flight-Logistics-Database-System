@@ -7,6 +7,7 @@ export default function Page() {
         <div>
             <div className='flex items-center justify-between gap-2 mt-4 md:mt-8'>
                 <Search placeholder='Search Crew'/>
+                <CreateCrew/>
             </div>
             <CrewsTable />
         </div>

@@ -113,6 +113,32 @@ const crewSchema = z.object({
   name : z.string()
 })
 
+export async function createCrew(formData: FormData){
+  const { name } = crewSchema.parse({
+    name: formData.get("name"),
+  });
+
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  try {
+    await sql`
+        insert into crew
+        (user_id, crew_name)
+        values(${user.id},${name});
+      `;
+  } catch (error) {
+    return `Something went Wrong! Error: ${error} `;
+  }
+
+  revalidatePath("/dashboard/crews");
+  revalidatePath("/dashboard/crew-members");
+  redirect("/dashboard/crew-members/create");
+}
+
 export async function updateCrew(formData : FormData, id:string){
   const { name } =
     crewSchema.parse({
@@ -141,6 +167,7 @@ export async function updateCrew(formData : FormData, id:string){
   }
 
   revalidatePath("/dashboard/crews");
+  revalidatePath("/dashboard/crew-members");
   redirect("/dashboard/crews");
 }
 
@@ -155,6 +182,91 @@ export async function deleteCrew(id: string) {
   await sql`
     DELETE FROM crew
     where user_id = ${user.id} and crew_id = ${id};
+  `;
+
+  revalidatePath("/dashboard/crews");
+  revalidatePath("/dashboard/crew-members");
+}
+
+const crewMemberSchema = z.object({
+  crewId: z.string(),
+  empId: z.string(),
+  role: z.string()
+})
+
+
+export async function createCrewMember(formData: FormData) {
+  const { crewId, empId, role } = crewMemberSchema.parse({
+    crewId: formData.get("crewId"),
+    empId: formData.get("employeeId"),
+    role: formData.get("role")
+  });
+
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  try {
+    await sql`
+        insert into crew_member
+        (user_id, crew_id, employee_id, role)
+        values(${user.id}, ${crewId},${empId}, ${role});
+      `;
+  } catch (error) {
+    return `Something went Wrong! Error: ${error} `;
+  }
+
+  revalidatePath("/dashboard/crews");
+  redirect("/dashboard/crew-members");
+}
+
+
+export async function updateCrewMember(formData: FormData, id: string) {
+  const { crewId, empId, role } = crewMemberSchema.parse({
+    crewId: formData.get("crewId"),
+    empId: formData.get("employeeId"),
+    role: formData.get("role"),
+  });
+
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  try {
+    await sql`
+        Update crew_member
+        SET
+          crew_id = ${crewId},
+          employee_id = ${empId},
+          role = ${role}
+        WHERE
+        user_id = ${user.id} AND crew_id = ${id} AND employee_id = ${empId};
+
+
+      `;
+  } catch (error) {
+    return `Something went Wrong! Error: ${error} `;
+  }
+
+  revalidatePath("/dashboard/crews");
+  redirect("/dashboard/crews");
+}
+
+
+export async function deleteCrewMember(id1: string, id2: string) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  await sql`
+    DELETE FROM crew_member
+    where user_id = ${user.id} and crew_id = ${id1} and employee_id = ${id2};
   `;
 
   revalidatePath("/dashboard/crews");

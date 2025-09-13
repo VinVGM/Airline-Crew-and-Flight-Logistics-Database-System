@@ -8,6 +8,7 @@ import {
     Airport,
     Flight,
     FlightSchedule,
+    CrewOverall,
 } from './definitions-acpl'
 import { create } from 'domain';
 import { createClient } from '@/supabase/server';
@@ -74,12 +75,14 @@ export async function fetchCrews(){
               : crew.created_at,
         }));
 
-        return data;
     }catch(error){
         console.error('Database Error:', error);
         throw new Error('Failed to fetch crew data.');
     }
 }
+
+
+
 
 
 
@@ -110,13 +113,72 @@ export async function fetchCrewbyId(id: string) {
 
 export async function fetchCrewMembers(){
     try{
-        const data = await sql<CrewMember[]>`SELECT * FROM crew_member`;
+
+        const supabase = await createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        await sql`
+        CREATE OR REPLACE VIEW CrewOverall AS
+        SELECT
+        cm.crew_ID       AS crew_id,
+        cm.employee_ID   AS employee_id,
+        cm.role          AS role,
+        c.user_ID        AS user_id,   -- crew and employee both tied to user_id
+        c.crew_Name      AS crew_name,
+         e.name           AS name
+        FROM CREW_MEMBER cm
+        JOIN CREW c ON cm.Crew_ID = c.Crew_ID
+        JOIN EMPLOYEE e ON cm.Employee_ID = e.Employee_ID
+        ;
+        `;
+
+
+        const data = await sql<CrewOverall[]>`SELECT * FROM CrewOverall where user_id = ${user.id}`;
         return data;
     }catch(error){
         console.error('Database Error:', error);
         throw new Error('Failed to fetch crew member data.');
     }
 }
+
+
+
+export async function fetchCrewMemberById(id1: string, id2: string) {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    await sql`
+        CREATE OR REPLACE VIEW CrewOverall AS
+        SELECT
+        cm.crew_ID       AS crew_id,
+        cm.employee_ID   AS employee_id,
+        cm.role          AS role,
+        c.user_ID        AS user_id,   -- crew and employee both tied to user_id
+        c.crew_Name      AS crew_name,
+         e.name           AS name
+        FROM CREW_MEMBER cm
+        JOIN CREW c ON cm.Crew_ID = c.Crew_ID
+        JOIN EMPLOYEE e ON cm.Employee_ID = e.Employee_ID
+        ;
+        `;
+
+    const data = await sql<
+      CrewOverall[]
+    >`SELECT * FROM CrewOverall where user_id = ${user.id} and crew_id = ${id1} and employee_id = ${id2}`;
+    return data;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch crew member data.");
+  }
+}
+
+
+
 
 
 export async function fetchAircrafts(){
