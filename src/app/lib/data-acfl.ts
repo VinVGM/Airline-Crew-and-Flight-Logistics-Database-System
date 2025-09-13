@@ -57,7 +57,23 @@ export async function fetchEmployeeById(id :string){
 
 export async function fetchCrews(){
     try{
-        const data = await sql<Crew[]>`SELECT * FROM crew`;
+
+        const supabase = await createClient();
+
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        const data = await sql<Crew[]>`SELECT * FROM crew where user_id = ${user.id}`;
+
+        return data.map((crew) => ({
+          ...crew,
+          created_at:
+            crew.created_at instanceof Date
+              ? crew.created_at.toISOString().split("T")[0]
+              : crew.created_at,
+        }));
+
         return data;
     }catch(error){
         console.error('Database Error:', error);
@@ -65,6 +81,31 @@ export async function fetchCrews(){
     }
 }
 
+
+
+export async function fetchCrewbyId(id: string) {
+  try {
+
+    const supabase = await createClient();
+
+    const { data: { user }} = await supabase.auth.getUser()
+
+    const data = await sql<Crew[]>`SELECT * FROM crew WHERE user_id=${user.id} and crew_id = ${id}`;
+    
+    return data.map((crew) => ({
+      ...crew,
+      created_at:
+        crew.created_at instanceof Date
+          ? crew.created_at.toISOString().split("T")[0]
+          : crew.created_at,
+    }));
+
+    return data;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch crew data.");
+  }
+}
 
 
 export async function fetchCrewMembers(){

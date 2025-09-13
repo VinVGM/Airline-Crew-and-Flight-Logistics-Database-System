@@ -82,23 +82,6 @@ export async function updateEmployee(formData:FormData, id: string) {
 
 
       `
-      const debubquery = `
-        Update employee
-        SET
-          name = '${name}',
-          designation = '${designation}',
-          dob = '${new_dob}',
-          license_number = '${license_number}',
-          experience = '${experience}'
-        WHERE
-        user_id = '${user.id}' AND employee_id = '${id}'
-
-
-      `
-
-      console.log(debubquery)
-
-
       
     }catch(error){
       return `Something went Wrong! Error: ${error} `
@@ -122,5 +105,57 @@ export async function deleteEmployee(id : string){
     where user_id = ${user.id} and employee_id = ${id};
   `
 
-  revalidatePath('/dashboard/invoices');
+  revalidatePath('/dashboard/employees');
+}
+
+
+const crewSchema = z.object({
+  name : z.string()
+})
+
+export async function updateCrew(formData : FormData, id:string){
+  const { name } =
+    crewSchema.parse({
+      name: formData.get("name"),
+    });
+
+
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  try {
+    await sql`
+        Update crew
+        SET
+          crew_name = ${name}
+        WHERE
+        user_id = ${user.id} AND crew_id = ${id}
+
+
+      `;
+  } catch (error) {
+    return `Something went Wrong! Error: ${error} `;
+  }
+
+  revalidatePath("/dashboard/crews");
+  redirect("/dashboard/crews");
+}
+
+
+export async function deleteCrew(id: string) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  await sql`
+    DELETE FROM crew
+    where user_id = ${user.id} and crew_id = ${id};
+  `;
+
+  revalidatePath("/dashboard/crews");
 }

@@ -2,24 +2,11 @@ import { Crew } from '@/app/lib/definitions-acpl';
 import { fetchCrews } from '@/app/lib/data-acfl';
 
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { DeleteCrew, UpdateCrew } from './buttons';
 
 export default async function CrewsTable() {
-  // const crews: Crew[] = await fetchCrews();
+  const crews = await fetchCrews();
 
-  const crews: Crew[] = [
-    {
-      crew_id: '1',
-      user_id: '1',
-      crew_name: 'Alpha Team',
-      created_at: '2023-01-01',
-    },
-    {
-      crew_id: '2',
-      user_id: '2',
-      crew_name: 'Bravo Team',
-      created_at: '2023-02-15',
-    },
-  ];
 
   return (
     <div className="mt-6 flow-root">
@@ -43,12 +30,8 @@ export default async function CrewsTable() {
                   </div>
                 </div>
                 <div className="flex gap-2 pt-4">
-                  <button className="text-blue-600 hover:text-blue-800" title="Update">
-                    <PencilSquareIcon className="h-5 w-5" />
-                  </button>
-                  <button className="text-red-600 hover:text-red-800" title="Delete">
-                    <TrashIcon className="h-5 w-5" />
-                  </button>
+                  <UpdateCrew id={crew.crew_id} />
+                  <DeleteCrew id={crew.crew_id} />
                 </div>
               </div>
             ))}
@@ -68,17 +51,19 @@ export default async function CrewsTable() {
                   key={crew.crew_id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">{crew.crew_id}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{crew.crew_name}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{crew.created_at}</td>
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                    {crew.crew_id}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {crew.crew_name}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {crew.created_at}
+                  </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <div className="flex gap-2">
-                      <button className="text-blue-600 hover:text-blue-800" title="Update">
-                        <PencilSquareIcon className="h-5 w-5" />
-                      </button>
-                      <button className="text-red-600 hover:text-red-800" title="Delete">
-                        <TrashIcon className="h-5 w-5" />
-                      </button>
+                      <UpdateCrew id={crew.crew_id} />
+                      <DeleteCrew id={crew.crew_id} />
                     </div>
                   </td>
                 </tr>
