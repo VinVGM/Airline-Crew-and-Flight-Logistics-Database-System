@@ -1,5 +1,5 @@
-import EditForm from "@/app/ui/invoices/edit-airport-form";
-import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
+import EditForm from "@/app/ui/util_components/edit-airport-form";
+import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";
 import { fetchAirportById} from "@/app/lib/data-acfl";
 import { Suspense } from "react";
 

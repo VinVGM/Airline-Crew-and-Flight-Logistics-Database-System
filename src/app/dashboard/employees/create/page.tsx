@@ -1,6 +1,6 @@
-import Form from "@/app/ui/invoices/create-employee-form";
+import Form from "@/app/ui/util_components/create-employee-form";
 
-import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
+import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";
 import { Suspense } from "react";
 import { FormSkeleton } from "@/app/ui/skeletons";
 export default function Page() {

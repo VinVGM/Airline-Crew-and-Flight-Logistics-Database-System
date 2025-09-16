@@ -3,7 +3,7 @@ import Search from '@/app/ui/search';
 import { CreateAirport } from '@/app/ui/airports/buttons';
 import { AirportsTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import Pagination from '@/app/ui/invoices/pagination';
+import Pagination from '@/app/ui/util_components/pagination';
 import { fetchAirports } from '@/app/lib/data-acfl';
 import { fetchAirportsPages } from '@/app/lib/data-acfl';
 

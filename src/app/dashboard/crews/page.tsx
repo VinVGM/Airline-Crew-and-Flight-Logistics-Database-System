@@ -3,7 +3,7 @@ import CrewsTable from "@/app/ui/crews/table";
 import { CreateCrew } from "@/app/ui/crews/buttons";
 import { Suspense } from "react";
 import { CrewsTableSkeleton } from "@/app/ui/skeletons";
-import Pagination from '@/app/ui/invoices/pagination';
+import Pagination from '@/app/ui/util_components/pagination';
 import { fetchCrews } from '@/app/lib/data-acfl';
 import { fetchCrewsPages } from '@/app/lib/data-acfl';
 

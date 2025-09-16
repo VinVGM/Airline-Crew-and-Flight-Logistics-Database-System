@@ -4,7 +4,7 @@ import Search from '@/app/ui/search';
 import { CreateEmployee } from '@/app/ui/employees/buttons';
 import { EmployeesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import Pagination from '@/app/ui/invoices/pagination';
+import Pagination from '@/app/ui/util_components/pagination';
 import { fetchEmployees } from '@/app/lib/data-acfl';
 import { fetchEmployeesPages } from '@/app/lib/data-acfl';
 

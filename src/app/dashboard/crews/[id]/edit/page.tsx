@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Breadcrumbs from "../../../../ui/invoices/breadcrumbs";
+import Breadcrumbs from "../../../../ui/util_components/breadcrumbs";
 
 import { FormSkeleton } from "../../../../ui/skeletons";
 import Form from "@/app/ui/crews/form";

@@ -1,6 +1,6 @@
-import Form from "@/app/ui/invoices/create-schedule-form";
+import Form from "@/app/ui/util_components/create-schedule-form";
 
-import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
+import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";
 import { Suspense } from "react";
 import { FormSkeleton } from "@/app/ui/skeletons";
 import { fetchCrews, fetchFlights } from "@/app/lib/data-acfl";

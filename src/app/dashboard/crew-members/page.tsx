@@ -4,7 +4,7 @@ import {CreateCrewMembers } from '@/app/ui/crews/buttons';
 import Search from '@/app/ui/search';
 import { Suspense } from 'react';
 import { CrewMembersTableSkeleton } from '@/app/ui/skeletons';
-import Pagination from '@/app/ui/invoices/pagination';
+import Pagination from '@/app/ui/util_components/pagination';
 import { fetchCrewMembers } from '@/app/lib/data-acfl';
 import { fetchCrewMembersPages } from '@/app/lib/data-acfl';
 

@@ -1,8 +1,8 @@
 
 'use client'
 
-import EditForm from "@/app/ui/invoices/edit-employee-form";
-import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
+import EditForm from "@/app/ui/util_components/edit-employee-form";
+import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";
 import {
   fetchCrews,
   fetchEmployeeById,

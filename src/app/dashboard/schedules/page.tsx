@@ -3,7 +3,7 @@ import Search from '@/app/ui/search';
 import { CreateSchedule } from '@/app/ui/schedules/buttons';
 import { SchedulesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import Pagination from '@/app/ui/invoices/pagination';
+import Pagination from '@/app/ui/util_components/pagination';
 import { fetchFlightSchedules } from '@/app/lib/data-acfl';
 import { fetchFlightSchedulesPages } from '@/app/lib/data-acfl';
 
