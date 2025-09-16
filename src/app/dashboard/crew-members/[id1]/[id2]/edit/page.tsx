@@ -15,8 +15,8 @@ export default async function Page(props: { params: Promise<{ id1: string , id2:
     const id1 = params.id1
     const id2 = params.id2
 
-    const employees = await fetchEmployees();
-    const crews = await fetchCrews();
+    const employees = await fetchEmployees('',1);
+    const crews = await fetchCrews('', 1);
 
     const crew_member = (await fetchCrewMemberById(id1, id2))[0]
 
