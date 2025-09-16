@@ -1,4 +1,4 @@
-import { FlightSchedule } from '@/app/lib/definitions-acpl';
+import { FlightScheduleView } from '@/app/lib/definitions-acpl';
 import { fetchFlightSchedules } from '@/app/lib/data-acfl';
 
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -11,7 +11,7 @@ export default async function FlightSchedulesTable({
     query: string;
     currentPage: number
   }) {
-  const schedules: FlightSchedule[] = await fetchFlightSchedules(query, currentPage);
+  const schedules: FlightScheduleView[] = await fetchFlightSchedules(query, currentPage);
 
   return (
     <div className="mt-6 flow-root">
@@ -27,7 +27,7 @@ export default async function FlightSchedulesTable({
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
                     <p className="font-medium">Flight: {schedule.flight_id}</p>
-                    <p className="text-sm text-gray-500">Crew: {schedule.crew_id}</p>
+                    <p className="text-sm text-gray-500">Crew: {schedule.crew_name}</p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-400">
@@ -75,7 +75,7 @@ export default async function FlightSchedulesTable({
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">{schedule.flight_no}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{schedule.crew_id}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{schedule.crew_name}</td>
                   <td className="whitespace-nowrap px-3 py-3">{schedule.date}</td>
                   <td className="whitespace-nowrap px-3 py-3">{schedule.departure_time}</td>
                   <td className="whitespace-nowrap px-3 py-3">{schedule.arrival_time}</td>

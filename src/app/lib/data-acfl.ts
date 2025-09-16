@@ -9,6 +9,8 @@ import {
     Flight,
     FlightSchedule,
     CrewOverall,
+    FlightView,
+    FlightScheduleView
 } from './definitions-acpl'
 import { create } from 'domain';
 import { createClient } from '@/supabase/server';
@@ -16,6 +18,38 @@ import { createClient } from '@/supabase/server';
 
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require'});
+
+
+export async function fetchOnTimeFlights() {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) throw new Error("User not authenticated");
+
+    const data = await sql<FlightView[]>`
+      SELECT *
+      FROM flight_view
+      WHERE user_id = ${user.id}
+        AND status = 'In Flight'
+      ORDER BY created_at DESC
+    `;
+
+    return data.map((flight) => ({
+      ...flight,
+      created_at:
+        (flight.created_at as any) instanceof Date
+          ? (flight.created_at as unknown as Date).toISOString().split("T")[0]
+          : String(flight.created_at),
+    }));
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch on-time flights.");
+  }
+}
+
 
 export async function fetchEmployees(query: string, currentPage: number){
     try{
@@ -472,37 +506,88 @@ export async function fetchAirportById(id: string){
     }
 }
 
-export async function fetchFlights(query: string, currentPage: number){
-    try{
-        const supabase = await createClient();
 
-        const { data: { user }} = await supabase.auth.getUser()
-        if (!user) throw new Error('User not authenticated');
-        const data = await sql<Flight[]>`
-        SELECT * 
-        FROM flight 
-        WHERE user_id = ${user.id}
+
+export async function fetchFlights(query: string, currentPage: number) {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) throw new Error("User not authenticated");
+
+    await sql`
+    CREATE OR REPLACE VIEW flight_view AS
+SELECT 
+    f.flight_id,
+    f.user_id,
+    f.flight_no,
+    f.status,
+    f.aircraft_id,
+    f.origin_airport_id,
+    f.destination_airport_id,
+    f.created_at,
+
+    -- Origin airport
+    a1.code AS origin_code,
+    a1.name AS origin_name,
+    a1.city AS origin_city,
+    a1.country AS origin_country,
+
+    -- Destination airport
+    a2.code AS destination_code,
+    a2.name AS destination_name,
+    a2.city AS destination_city,
+    a2.country AS destination_country,
+
+    -- Aircraft details
+    ac.aircraft_reg AS aircraft_registration,
+    ac.model AS aircraft_model,
+    ac.manufacturer AS aircraft_manufacturer,
+    ac.capacity AS aircraft_capacity,
+    ac.maintenance_status AS aircraft_status
+
+FROM flight f
+JOIN airport a1 ON f.origin_airport_id = a1.airport_id
+JOIN airport a2 ON f.destination_airport_id = a2.airport_id
+JOIN aircraft ac ON f.aircraft_id = ac.aircraft_id;
+
+    
+    `;
+
+
+    const data = await sql<FlightView[]>`
+      SELECT *
+      FROM flight_view
+      WHERE user_id = ${user.id}
         AND (
-            flight_no ILIKE ${"%" + query + "%"} OR
-            status ILIKE ${"%" + query + "%"} OR
-
-
-            created_at::text ILIKE ${"%" + query + "%"}
+          flight_no ILIKE ${"%" + query + "%"} OR
+          status ILIKE ${"%" + query + "%"} OR
+          origin_code ILIKE ${"%" + query + "%"} OR
+          origin_name ILIKE ${"%" + query + "%"} OR
+          destination_code ILIKE ${"%" + query + "%"} OR
+          destination_name ILIKE ${"%" + query + "%"} OR
+          created_at::text ILIKE ${"%" + query + "%"}
         )
-        ORDER BY created_at DESC
-        LIMIT 6 OFFSET ${(currentPage - 1) * 6};
-        `;
-        
-        return data.map(flight => ({
-            ...flight,
-            created_at: (flight.created_at as any) instanceof Date ? (flight.created_at as unknown as Date).toISOString().split('T')[0] : String(flight.created_at),
-        }));
+      ORDER BY created_at DESC
+      LIMIT 6 OFFSET ${(currentPage - 1) * 6};
+    `;
 
-    }catch(error){
-        console.error('Database Error:', error);
-        throw new Error('Failed to fetch flight data.');
-    }
+    // Normalize created_at to "YYYY-MM-DD"
+    return data.map((flight) => ({
+      ...flight,
+      created_at:
+        (flight.created_at as any) instanceof Date
+          ? (flight.created_at as unknown as Date).toISOString().split("T")[0]
+          : String(flight.created_at),
+    }));
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch flight data.");
+  }
 }
+
 
 export async function fetchFlightsPages(query: string) {
   try {
@@ -553,22 +638,45 @@ export async function fetchFlightSchedules(query: string, currentPage: number){
 
         const { data: { user }} = await supabase.auth.getUser()
         if (!user) throw new Error('User not authenticated');
-        const data = await sql<FlightSchedule[]>`
-        SELECT *, f.flight_no
-        FROM flight_schedule fs
-        join flight f on fs.flight_id = f.flight_id
-        WHERE fs.user_id = ${user.id}
-        AND (
 
-            fs.arrival_time::text ILIKE ${"%" + query + "%"} OR
-            fs.departure_time::text ILIKE ${"%" + query + "%"} OR
-            fs.date::text ILIKE ${"%" + query + "%"} OR
-            fs.created_at::text ILIKE ${"%" + query + "%"}
-        )
-        ORDER BY date DESC, departure_time DESC
-        LIMIT 6 OFFSET ${(currentPage - 1) * 6};
-        `;
+        await sql`
+      CREATE OR REPLACE VIEW flight_schedule_view AS
+      SELECT 
+          fs.schedule_id,
+          fs.user_id,
+          fs.crew_id,
+          fs.flight_id,
+          f.flight_no,
+          c.crew_name,
+          fs.arrival_time,
+          fs.departure_time,
+          fs.date,
+          fs.created_at
+      FROM flight_schedule fs
+      JOIN flight f ON fs.flight_id = f.flight_id
+      JOIN crew c ON fs.crew_id = c.crew_id;
+    `;
+
+
+
+
+
         
+        const data = await sql<FlightScheduleView[]>`
+      SELECT *
+      FROM flight_schedule_view
+      WHERE user_id = ${user.id}
+        AND (
+          flight_no ILIKE ${"%" + query + "%"} OR
+          crew_name ILIKE ${"%" + query + "%"} OR
+          arrival_time::text ILIKE ${"%" + query + "%"} OR
+          departure_time::text ILIKE ${"%" + query + "%"} OR
+          date::text ILIKE ${"%" + query + "%"}
+        )
+      ORDER BY date DESC, departure_time DESC
+      LIMIT 6 OFFSET ${(currentPage - 1) * 6};
+    `;
+
         return data.map(schedule => ({
             ...schedule,
             arrival_time: schedule.arrival_time instanceof Date ? schedule.arrival_time.toISOString().split('T')[0] + ' ' + schedule.arrival_time.toTimeString().split(' ')[0] : schedule.arrival_time,

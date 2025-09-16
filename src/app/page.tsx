@@ -1,6 +1,6 @@
-import AcmeLogo from '@/app/ui/logo';
+import Logo from '@/app/ui/logo';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import { Acme } from 'next/font/google';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { lusitana } from './ui/fonts';
@@ -11,7 +11,7 @@ export default function Page() {
   return (
     <main className="flex min-h-screen flex-col p-6">
       <div className="flex h-40 shrink-0 items-end rounded-lg bg-[#B9375D] p-4 md:h-52">
-        <AcmeLogo  />
+        <Logo  />
       </div>
       <div className=" mt-2 flex grow flex-col md:gap-4 md:flex-row">
         <div className="hidden flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12 md:block">

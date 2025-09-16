@@ -71,9 +71,9 @@ export default async function FlightsTable({
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">{flight.flight_no}</td>
                   <td className="whitespace-nowrap px-3 py-3">{flight.status}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{flight.aircraft_id}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{flight.origin_airport_id}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{flight.destination_airport_id}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{flight.aircraft_registration}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{flight.origin_city}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{flight.destination_city}</td>
                   <td className="whitespace-nowrap px-3 py-3">{flight.created_at}</td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <div className="flex gap-2">

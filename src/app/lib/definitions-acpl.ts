@@ -75,3 +75,47 @@ export type CrewOverall = {
   crew_name: string;
   name: string;
 };
+
+export type FlightView = {
+  flight_id: string;
+  user_id: string;
+  flight_no: string;
+  status: string;
+  aircraft_id: string;
+  origin_airport_id: string;
+  destination_airport_id: string;
+  created_at: string;
+
+  // Origin
+  origin_code: string;
+  origin_name: string;
+  origin_city: string;
+  origin_country: string;
+
+  // Destination
+  destination_code: string;
+  destination_name: string;
+  destination_city: string;
+  destination_country: string;
+
+  // Aircraft
+  aircraft_registration: string;
+  aircraft_model: string;
+  aircraft_manufacturer: string;
+  aircraft_capacity: number;
+  aircraft_status: string;
+};
+
+
+export type FlightScheduleView = {
+  schedule_id: string;
+  user_id: string;
+  crew_id: string;
+  flight_id: string;
+  flight_no: string;
+  crew_name: string;
+  arrival_time: string;
+  departure_time: string;
+  date: string;
+  created_at: string;
+};
