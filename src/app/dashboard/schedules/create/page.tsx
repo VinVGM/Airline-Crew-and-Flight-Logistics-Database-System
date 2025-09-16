@@ -4,6 +4,8 @@ import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";
 import { Suspense } from "react";
 import { FormSkeleton } from "@/app/ui/skeletons";
 import { fetchCrews, fetchFlights } from "@/app/lib/data-acfl";
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 export default async function Page() {
 
     const [crews, flights] = await Promise.all([

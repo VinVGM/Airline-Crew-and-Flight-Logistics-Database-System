@@ -5,6 +5,9 @@ import { Suspense } from "react";
 import { FormSkeleton } from "@/app/ui/skeletons";
 import { fetchAircrafts, fetchAirports } from "@/app/lib/data-acfl";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function Page() {
 
     const [aircrafts, airports] = await Promise.all([
