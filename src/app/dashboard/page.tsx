@@ -87,7 +87,7 @@ export default async function Page() {
                             <td className="px-4 py-2">{airport.code}</td>
                             <td className="px-4 py-2">{airport.name}</td>
                             <td className="px-4 py-2">
-                              L{airport.country}
+                              {airport.country}
                             </td>
                           </tr>
                         ))}
