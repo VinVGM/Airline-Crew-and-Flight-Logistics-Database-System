@@ -12,12 +12,57 @@ import {
     FlightView,
     FlightScheduleView
 } from './definitions-acpl'
-import { create } from 'domain';
 import { createClient } from '@/supabase/server';
 
 
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require'});
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' as const });
+
+// Postgres row types where date/timestamp fields may be Date or string
+type EmployeeRow = Omit<Employee, 'dob' | 'created_at'> & {
+  dob: string | Date;
+  created_at: string | Date;
+};
+
+type CrewRow = Omit<Crew, 'created_at'> & {
+  created_at: string | Date;
+};
+
+type AircraftRow = Omit<Aircraft, 'created_at'> & {
+  created_at: string | Date;
+};
+
+type AirportRow = Omit<Airport, 'created_at'> & {
+  created_at: string | Date;
+};
+
+type FlightRow = Omit<Flight, 'created_at'> & {
+  created_at: string | Date;
+};
+
+type FlightViewRow = Omit<FlightView, 'created_at'> & {
+  created_at: string | Date;
+};
+
+type FlightScheduleRow = Omit<
+  FlightSchedule,
+  'arrival_time' | 'departure_time' | 'date' | 'created_at'
+> & {
+  arrival_time: string | Date;
+  departure_time: string | Date;
+  date: string | Date;
+  created_at: string | Date;
+};
+
+type FlightScheduleViewRow = Omit<
+  FlightScheduleView,
+  'arrival_time' | 'departure_time' | 'date' | 'created_at'
+> & {
+  arrival_time: string | Date;
+  departure_time: string | Date;
+  date: string | Date;
+  created_at: string | Date;
+};
 
 
 export async function fetchOnTimeFlights() {
@@ -29,7 +74,7 @@ export async function fetchOnTimeFlights() {
 
     if (!user) throw new Error("User not authenticated");
 
-    const data = await sql<FlightView[]>`
+    const data = await sql<FlightViewRow[]>`
       SELECT *
       FROM flight_view
       WHERE user_id = ${user.id}
@@ -40,8 +85,8 @@ export async function fetchOnTimeFlights() {
     return data.map((flight) => ({
       ...flight,
       created_at:
-        (flight.created_at as any) instanceof Date
-          ? (flight.created_at as unknown as Date).toISOString().split("T")[0]
+        flight.created_at instanceof Date
+          ? flight.created_at.toISOString().split("T")[0]
           : String(flight.created_at),
     }));
   } catch (error) {
@@ -58,7 +103,7 @@ export async function fetchEmployees(query: string, currentPage: number){
 
         const { data: { user }} = await supabase.auth.getUser()
         if (!user) throw new Error('User not authenticated');
-        const data = await sql<Employee[]>`
+        const data = await sql<EmployeeRow[]>`
         SELECT * 
         FROM employee
         WHERE user_id = ${user.id}
@@ -120,7 +165,7 @@ export async function fetchEmployeeById(id :string){
     const { data: { user }} = await supabase.auth.getUser()
     if (!user) throw new Error('User not authenticated');
     try{
-        const data = await sql<Employee[]>`SELECT * FROM employee where employee_id=${id} AND user_id=${user.id};`
+        const data = await sql<EmployeeRow[]>`SELECT * FROM employee where employee_id=${id} AND user_id=${user.id};`
         return data.map(emp => ({
             ...emp,
             dob: emp.dob instanceof Date ? emp.dob.toISOString().split('T')[0] : emp.dob,
@@ -143,7 +188,7 @@ export async function fetchCrews(query: string, currentPage: number){
         } = await supabase.auth.getUser();
         if (!user) throw new Error('User not authenticated');
 
-        const data = await sql<Crew[]>`
+        const data = await sql<CrewRow[]>`
         SELECT * 
         FROM crew
         WHERE user_id = ${user.id}
@@ -199,7 +244,7 @@ export async function fetchCrewsPages(query: string) {
 
 
 
-export async function fetchCrewbyId(id: string) {
+export async function fetchCrewbyId(id: string): Promise<Crew[]> {
   try {
 
     const supabase = await createClient();
@@ -207,7 +252,7 @@ export async function fetchCrewbyId(id: string) {
     const { data: { user }} = await supabase.auth.getUser()
     if (!user) throw new Error('User not authenticated');
 
-    const data = await sql<Crew[]>`SELECT * FROM crew WHERE user_id=${user.id} and crew_id = ${id}`;
+    const data = await sql<CrewRow[]>`SELECT * FROM crew WHERE user_id=${user.id} and crew_id = ${id}`;
     
     return data.map((crew) => ({
       ...crew,
@@ -215,9 +260,9 @@ export async function fetchCrewbyId(id: string) {
         crew.created_at instanceof Date
           ? crew.created_at.toISOString().split("T")[0]
           : crew.created_at,
-    }));
+    })) as Crew[];
 
-    return data;
+    return data as unknown as Crew[];
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch crew data.");
@@ -355,7 +400,7 @@ export async function fetchAircrafts(query: string, currentPage: number){
 
         const { data: { user }} = await supabase.auth.getUser()
         if (!user) throw new Error('User not authenticated');
-        const data = await sql<Aircraft[]>`
+        const data = await sql<AircraftRow[]>`
         SELECT * 
         FROM aircraft 
         WHERE user_id = ${user.id}
@@ -417,7 +462,7 @@ export async function fetchAircraftById(id: string){
     const { data: { user }} = await supabase.auth.getUser()
     if (!user) throw new Error('User not authenticated');
     try{
-        const data = await sql<Aircraft[]>`SELECT * FROM aircraft where aircraft_id=${id} AND user_id=${user.id};`
+        const data = await sql<AircraftRow[]>`SELECT * FROM aircraft where aircraft_id=${id} AND user_id=${user.id};`
         return data.map(aircraft => ({
             ...aircraft,
             created_at: aircraft.created_at instanceof Date ? aircraft.created_at.toISOString().split('T')[0] : aircraft.created_at,
@@ -435,7 +480,7 @@ export async function fetchAirports(query: string, currentPage: number){
 
         const { data: { user }} = await supabase.auth.getUser()
         if (!user) throw new Error('User not authenticated');
-        const data = await sql<Airport[]>`
+        const data = await sql<AirportRow[]>`
         SELECT * 
         FROM airport 
         WHERE user_id = ${user.id}
@@ -495,7 +540,7 @@ export async function fetchAirportById(id: string){
     const { data: { user }} = await supabase.auth.getUser()
     if (!user) throw new Error('User not authenticated');
     try{
-        const data = await sql<Airport[]>`SELECT * FROM airport where airport_id=${id} AND user_id=${user.id};`
+        const data = await sql<AirportRow[]>`SELECT * FROM airport where airport_id=${id} AND user_id=${user.id};`
         return data.map(airport => ({
             ...airport,
             created_at: airport.created_at instanceof Date ? airport.created_at.toISOString().split('T')[0] : airport.created_at,
@@ -557,7 +602,7 @@ JOIN aircraft ac ON f.aircraft_id = ac.aircraft_id;
     `;
 
 
-    const data = await sql<FlightView[]>`
+    const data = await sql<FlightViewRow[]>`
       SELECT *
       FROM flight_view
       WHERE user_id = ${user.id}
@@ -622,7 +667,7 @@ export async function fetchFlightById(id: string){
     const { data: { user }} = await supabase.auth.getUser()
     if (!user) throw new Error('User not authenticated');
     try{
-        const data = await sql<Flight[]>`SELECT * FROM flight where flight_id=${id} AND user_id=${user.id};`
+        const data = await sql<FlightRow[]>`SELECT * FROM flight where flight_id=${id} AND user_id=${user.id};`
         return data.map(flight => ({
             ...flight,
             created_at: (flight.created_at as any) instanceof Date ? (flight.created_at as Date).toISOString().split('T')[0] : String(flight.created_at),
@@ -662,7 +707,7 @@ export async function fetchFlightSchedules(query: string, currentPage: number){
 
 
         
-        const data = await sql<FlightScheduleView[]>`
+        const data = await sql<FlightScheduleViewRow[]>`
       SELECT *
       FROM flight_schedule_view
       WHERE user_id = ${user.id}
@@ -725,7 +770,7 @@ export async function fetchFlightScheduleById(id: string){
     const { data: { user }} = await supabase.auth.getUser()
     if (!user) throw new Error('User not authenticated');
     try{
-        const data = await sql<FlightSchedule[]>`SELECT *, f.flight_no FROM flight_schedule fs JOIN flight f ON fs.flight_id = f.flight_id where schedule_id=${id} AND user_id=${user.id};`
+        const data = await sql<FlightScheduleRow[]>`SELECT *, f.flight_no FROM flight_schedule fs JOIN flight f ON fs.flight_id = f.flight_id where schedule_id=${id} AND user_id=${user.id};`
         return data.map(schedule => ({
             ...schedule,
             arrival_time: schedule.arrival_time instanceof Date ? schedule.arrival_time.toISOString().split('T')[0] + ' ' + schedule.arrival_time.toTimeString().split(' ')[0] : schedule.arrival_time,

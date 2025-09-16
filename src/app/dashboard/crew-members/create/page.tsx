@@ -8,9 +8,9 @@ import { fetchCrews, fetchEmployees } from "@/app/lib/data-acfl";
 
 export default async function Page() {
 
-    const crews = await fetchCrews()
+    const crews = await fetchCrews('', 1)
 
-    const employees = await fetchEmployees()
+    const employees = await fetchEmployees('', 1)
     return (
         <main>
             <Breadcrumbs

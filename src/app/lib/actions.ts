@@ -8,7 +8,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require'});
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' as const });
 
 
 
@@ -39,6 +39,9 @@ export async function createEmployee(formData : FormData){
     const supabase = await createClient();
 
     const { data: {user}} = await supabase.auth.getUser()
+    if (!user) {
+      redirect('/login')
+    }
     try{
       await sql`
           INSERT INTO employee (user_id, name, designation, dob, license_number, experience) 
@@ -69,6 +72,9 @@ export async function updateEmployee(formData:FormData, id: string) {
     const supabase = await createClient();
 
     const { data: {user}} = await supabase.auth.getUser();
+    if (!user) {
+      redirect('/login')
+    }
 
     try{
       await sql`
@@ -100,6 +106,9 @@ export async function deleteEmployee(id : string){
   const supabase = await createClient();
 
   const { data: {user}} = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
   
   
   await sql `
@@ -128,6 +137,9 @@ export async function createCrew(formData: FormData){
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
 
   try {
     await sql`
@@ -156,6 +168,9 @@ export async function updateCrew(formData : FormData, id:string){
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
 
   try {
     await sql`
@@ -183,6 +198,9 @@ export async function deleteCrew(id: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
 
   await sql`
     DELETE FROM crew
@@ -212,6 +230,9 @@ export async function createCrewMember(formData: FormData) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
 
   try {
     await sql`
@@ -240,6 +261,9 @@ export async function updateCrewMember(formData: FormData, id: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
 
   try {
     await sql`
@@ -268,6 +292,9 @@ export async function deleteCrewMember(id1: string, id2: string) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
 
   await sql`
     DELETE FROM crew_member
@@ -299,6 +326,9 @@ export async function createAircraft(formData : FormData){
     const supabase = await createClient();
 
     const { data: {user}} = await supabase.auth.getUser()
+    if (!user) {
+      redirect('/login')
+    }
     try{
       await sql`
           INSERT INTO aircraft (user_id, model, aircraft_reg, manufacturer, capacity, maintenance_status) 
@@ -324,6 +354,9 @@ export async function updateAircraft(formData:FormData, id: string) {
     const supabase = await createClient();
 
     const { data: {user}} = await supabase.auth.getUser();
+    if (!user) {
+      redirect('/login')
+    }
 
     try{
       await sql`
@@ -350,6 +383,9 @@ export async function deleteAircraft(id : string){
   const supabase = await createClient();
 
   const { data: {user}} = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
   
   
   await sql `
@@ -380,6 +416,9 @@ export async function createAirport(formData : FormData){
     const supabase = await createClient();
 
     const { data: {user}} = await supabase.auth.getUser()
+    if (!user) {
+      redirect('/login')
+    }
     try{
       await sql`
           INSERT INTO airport (user_id, code, name, city, country) 
@@ -404,6 +443,9 @@ export async function updateAirport(formData:FormData, id: string) {
     const supabase = await createClient();
 
     const { data: {user}} = await supabase.auth.getUser();
+    if (!user) {
+      redirect('/login')
+    }
 
     try{
       await sql`
@@ -429,6 +471,9 @@ export async function deleteAirport(id : string){
   const supabase = await createClient();
 
   const { data: {user}} = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
   
   
   await sql `
@@ -461,6 +506,9 @@ export async function createFlight(formData : FormData){
     const supabase = await createClient();
 
     const { data: {user}} = await supabase.auth.getUser()
+    if (!user) {
+      redirect('/login')
+    }
     try{
       await sql`
           INSERT INTO flight (user_id, flight_no, status, aircraft_id, origin_airport_id, destination_airport_id) 
@@ -486,6 +534,9 @@ export async function updateFlight(formData:FormData, id: string) {
     const supabase = await createClient();
 
     const { data: {user}} = await supabase.auth.getUser();
+    if (!user) {
+      redirect('/login')
+    }
 
     try{
       await sql`
@@ -512,6 +563,9 @@ export async function deleteFlight(id : string){
   const supabase = await createClient();
 
   const { data: {user}} = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
   
   
   await sql `
@@ -544,6 +598,9 @@ export async function createFlightSchedule(formData : FormData){
     const supabase = await createClient();
 
     const { data: {user}} = await supabase.auth.getUser()
+    if (!user) {
+      redirect('/login')
+    }
     try{
       await sql`
           INSERT INTO flight_schedule (user_id, crew_id, flight_id, arrival_time, departure_time, date) 
@@ -569,6 +626,9 @@ export async function updateFlightSchedule(formData:FormData, id: string) {
     const supabase = await createClient();
 
     const { data: {user}} = await supabase.auth.getUser();
+    if (!user) {
+      redirect('/login')
+    }
 
     try{
       await sql`
@@ -595,9 +655,12 @@ export async function deleteFlightSchedule(id : string){
   const supabase = await createClient();
 
   const { data: {user}} = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login')
+  }
   
   
-  await sql `
+  await sql`
     DELETE FROM flight_schedule
     where user_id = ${user.id} and schedule_id = ${id};
   `
@@ -606,13 +669,3 @@ export async function deleteFlightSchedule(id : string){
 }
 
 
-  export async function reset() {
-    const supabaseAdmin = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-
-  // Update user by id (admin)
-  const { data, error } = await supabaseAdmin.auth.admin.updateUserById('62b311b6-f4b2-490e-806a-366a52f029ce', {
-    password: 'lmao1234'
-  });
-
-  console.log("done");
-  }
