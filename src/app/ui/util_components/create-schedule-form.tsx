@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { createFlightSchedule } from '@/app/lib/actions';
 import { useActionState } from 'react';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
-import { fetchCrews, fetchFlights } from '@/app/lib/data-acfl';
+
+import { Crew, Flight } from '@/app/lib/definitions-acpl';
 
 export default function Form({ crews, flights }: { crews: Crew[], flights: Flight[] }) {
 
