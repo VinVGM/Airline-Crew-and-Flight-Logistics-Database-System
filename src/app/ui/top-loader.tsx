@@ -42,7 +42,7 @@ export default function TopLoader() {
       rafRef.current = null;
     }
     // Jump to at least 70%, then animate to 100%, then reset
-    setProgress(p => (p < 0.7 ? 0.7 : p));
+    setProgress(p => (p < 0.6 ? 0.6 : p));
     if (toOneTimerRef.current) window.clearTimeout(toOneTimerRef.current);
     if (resetTimerRef.current) window.clearTimeout(resetTimerRef.current);
     toOneTimerRef.current = window.setTimeout(() => {
