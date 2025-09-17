@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from '@/app/ui/button';
+import { SubmitButton } from '@/app/ui/submit-button';
 import Link from 'next/link';
 import { updateEmployee } from '@/app/lib/actions';
 import { useActionState } from 'react';
@@ -116,7 +116,7 @@ export default function EditForm({
                     >
                         Cancel
                     </Link>
-                    <Button type='submit'>Update Employee</Button>
+                    <SubmitButton pendingText="Updating...">Update Employee</SubmitButton>
                 </div>
 
                 <div className='flex h-8 items-end space-x-1'>

@@ -1,4 +1,4 @@
-import postgres from 'postgres';
+import { sql } from '@/app/lib/db';
 
 import {
     Employee,
@@ -16,7 +16,7 @@ import { createClient } from '@/supabase/server';
 
 
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' as const });
+// using shared sql client from lib/db
 
 // Postgres row types where date/timestamp fields may be Date or string
 type EmployeeRow = Omit<Employee, 'dob' | 'created_at'> & {
@@ -75,11 +75,35 @@ export async function fetchOnTimeFlights() {
     if (!user) throw new Error("User not authenticated");
 
     const data = await sql<FlightViewRow[]>`
-      SELECT *
-      FROM flight_view
-      WHERE user_id = ${user.id}
-        AND status = 'In Flight'
-      ORDER BY created_at DESC
+      SELECT 
+        f.flight_id,
+        f.user_id,
+        f.flight_no,
+        f.status,
+        f.aircraft_id,
+        f.origin_airport_id,
+        f.destination_airport_id,
+        f.created_at,
+        a1.code AS origin_code,
+        a1.name AS origin_name,
+        a1.city AS origin_city,
+        a1.country AS origin_country,
+        a2.code AS destination_code,
+        a2.name AS destination_name,
+        a2.city AS destination_city,
+        a2.country AS destination_country,
+        ac.aircraft_reg AS aircraft_registration,
+        ac.model AS aircraft_model,
+        ac.manufacturer AS aircraft_manufacturer,
+        ac.capacity AS aircraft_capacity,
+        ac.maintenance_status AS aircraft_status
+      FROM flight f
+      JOIN airport a1 ON f.origin_airport_id = a1.airport_id
+      JOIN airport a2 ON f.destination_airport_id = a2.airport_id
+      JOIN aircraft ac ON f.aircraft_id = ac.aircraft_id
+      WHERE f.user_id = ${user.id}
+        AND f.status = 'In Flight'
+      ORDER BY f.created_at DESC
     `;
 
     return data.map((flight) => ({
@@ -278,33 +302,24 @@ export async function fetchCrewMembers(query: string, currentPage: number){
           data: { user },
         } = await supabase.auth.getUser();
         if (!user) throw new Error('User not authenticated');
-
-        await sql`
-        CREATE OR REPLACE VIEW CrewOverall AS
-        SELECT
-        cm.crew_ID       AS crew_id,
-        cm.employee_ID   AS employee_id,
-        cm.role          AS role,
-        c.user_ID        AS user_id,   -- crew and employee both tied to user_id
-        c.crew_Name      AS crew_name,
-         e.name           AS name
-        FROM CREW_MEMBER cm
-        JOIN CREW c ON cm.Crew_ID = c.Crew_ID
-        JOIN EMPLOYEE e ON cm.Employee_ID = e.Employee_ID
-        ;
-        `;
-
-
         const data = await sql<CrewOverall[]>`
-        SELECT * 
-        FROM CrewOverall 
-        WHERE user_id = ${user.id}
-        AND (
-            crew_name ILIKE ${"%" + query + "%"} OR
-            name ILIKE ${"%" + query + "%"} OR
-            role ILIKE ${"%" + query + "%"}
-        )
-        ORDER BY crew_name, name
+        SELECT 
+          cm.crew_id AS crew_id,
+          cm.employee_id AS employee_id,
+          cm.role AS role,
+          c.user_id AS user_id,
+          c.crew_name AS crew_name,
+          e.name AS name
+        FROM crew_member cm
+        JOIN crew c ON cm.crew_id = c.crew_id
+        JOIN employee e ON cm.employee_id = e.employee_id
+        WHERE c.user_id = ${user.id}
+          AND (
+            c.crew_name ILIKE ${"%" + query + "%"} OR
+            e.name ILIKE ${"%" + query + "%"} OR
+            cm.role ILIKE ${"%" + query + "%"}
+          )
+        ORDER BY c.crew_name, e.name
         LIMIT 6 OFFSET ${(currentPage - 1) * 6};
         `;
         return data;
@@ -321,32 +336,18 @@ export async function fetchCrewMembersPages(query: string) {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
-
-    await sql`
-        CREATE OR REPLACE VIEW CrewOverall AS
-        SELECT
-        cm.crew_ID       AS crew_id,
-        cm.employee_ID   AS employee_id,
-        cm.role          AS role,
-        c.user_ID        AS user_id,   -- crew and employee both tied to user_id
-        c.crew_Name      AS crew_name,
-         e.name           AS name
-        FROM CREW_MEMBER cm
-        JOIN CREW c ON cm.Crew_ID = c.Crew_ID
-        JOIN EMPLOYEE e ON cm.Employee_ID = e.Employee_ID
-        ;
-        `;
-
     const data = await sql`
-        SELECT COUNT(*) 
-        FROM CrewOverall 
-        WHERE user_id = ${user.id}
+      SELECT COUNT(*)
+      FROM crew_member cm
+      JOIN crew c ON cm.crew_id = c.crew_id
+      JOIN employee e ON cm.employee_id = e.employee_id
+      WHERE c.user_id = ${user.id}
         AND (
-            crew_name ILIKE ${"%" + query + "%"} OR
-            name ILIKE ${"%" + query + "%"} OR
-            role ILIKE ${"%" + query + "%"}
+          c.crew_name ILIKE ${"%" + query + "%"} OR
+          e.name ILIKE ${"%" + query + "%"} OR
+          cm.role ILIKE ${"%" + query + "%"}
         )
-        `;
+    `;
     const totalPages = Math.ceil(Number(data[0].count) / 6);
     return totalPages
   } catch (error) {
@@ -364,25 +365,21 @@ export async function fetchCrewMemberById(id1: string, id2: string) {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) throw new Error('User not authenticated');
-
-    await sql`
-        CREATE OR REPLACE VIEW CrewOverall AS
-        SELECT
-        cm.crew_ID       AS crew_id,
-        cm.employee_ID   AS employee_id,
-        cm.role          AS role,
-        c.user_ID        AS user_id,   -- crew and employee both tied to user_id
-        c.crew_Name      AS crew_name,
-         e.name           AS name
-        FROM CREW_MEMBER cm
-        JOIN CREW c ON cm.Crew_ID = c.Crew_ID
-        JOIN EMPLOYEE e ON cm.Employee_ID = e.Employee_ID
-        ;
-        `;
-
-    const data = await sql<
-      CrewOverall[]
-    >`SELECT * FROM CrewOverall where user_id = ${user.id} and crew_id = ${id1} and employee_id = ${id2}`;
+    const data = await sql<CrewOverall[]>`
+      SELECT 
+        cm.crew_id AS crew_id,
+        cm.employee_id AS employee_id,
+        cm.role AS role,
+        c.user_id AS user_id,
+        c.crew_name AS crew_name,
+        e.name AS name
+      FROM crew_member cm
+      JOIN crew c ON cm.crew_id = c.crew_id
+      JOIN employee e ON cm.employee_id = e.employee_id
+      WHERE c.user_id = ${user.id}
+        AND cm.crew_id = ${id1}
+        AND cm.employee_id = ${id2}
+    `;
     return data;
   } catch (error) {
     console.error("Database Error:", error);
@@ -562,60 +559,44 @@ export async function fetchFlights(query: string, currentPage: number) {
 
     if (!user) throw new Error("User not authenticated");
 
-    await sql`
-    CREATE OR REPLACE VIEW flight_view AS
-SELECT 
-    f.flight_id,
-    f.user_id,
-    f.flight_no,
-    f.status,
-    f.aircraft_id,
-    f.origin_airport_id,
-    f.destination_airport_id,
-    f.created_at,
-
-    -- Origin airport
-    a1.code AS origin_code,
-    a1.name AS origin_name,
-    a1.city AS origin_city,
-    a1.country AS origin_country,
-
-    -- Destination airport
-    a2.code AS destination_code,
-    a2.name AS destination_name,
-    a2.city AS destination_city,
-    a2.country AS destination_country,
-
-    -- Aircraft details
-    ac.aircraft_reg AS aircraft_registration,
-    ac.model AS aircraft_model,
-    ac.manufacturer AS aircraft_manufacturer,
-    ac.capacity AS aircraft_capacity,
-    ac.maintenance_status AS aircraft_status
-
-FROM flight f
-JOIN airport a1 ON f.origin_airport_id = a1.airport_id
-JOIN airport a2 ON f.destination_airport_id = a2.airport_id
-JOIN aircraft ac ON f.aircraft_id = ac.aircraft_id;
-
-    
-    `;
-
-
     const data = await sql<FlightViewRow[]>`
-      SELECT *
-      FROM flight_view
-      WHERE user_id = ${user.id}
+      SELECT 
+        f.flight_id,
+        f.user_id,
+        f.flight_no,
+        f.status,
+        f.aircraft_id,
+        f.origin_airport_id,
+        f.destination_airport_id,
+        f.created_at,
+        a1.code AS origin_code,
+        a1.name AS origin_name,
+        a1.city AS origin_city,
+        a1.country AS origin_country,
+        a2.code AS destination_code,
+        a2.name AS destination_name,
+        a2.city AS destination_city,
+        a2.country AS destination_country,
+        ac.aircraft_reg AS aircraft_registration,
+        ac.model AS aircraft_model,
+        ac.manufacturer AS aircraft_manufacturer,
+        ac.capacity AS aircraft_capacity,
+        ac.maintenance_status AS aircraft_status
+      FROM flight f
+      JOIN airport a1 ON f.origin_airport_id = a1.airport_id
+      JOIN airport a2 ON f.destination_airport_id = a2.airport_id
+      JOIN aircraft ac ON f.aircraft_id = ac.aircraft_id
+      WHERE f.user_id = ${user.id}
         AND (
-          flight_no ILIKE ${"%" + query + "%"} OR
-          status ILIKE ${"%" + query + "%"} OR
-          origin_code ILIKE ${"%" + query + "%"} OR
-          origin_name ILIKE ${"%" + query + "%"} OR
-          destination_code ILIKE ${"%" + query + "%"} OR
-          destination_name ILIKE ${"%" + query + "%"} OR
-          created_at::text ILIKE ${"%" + query + "%"}
+          f.flight_no ILIKE ${"%" + query + "%"} OR
+          f.status ILIKE ${"%" + query + "%"} OR
+          a1.code ILIKE ${"%" + query + "%"} OR
+          a1.name ILIKE ${"%" + query + "%"} OR
+          a2.code ILIKE ${"%" + query + "%"} OR
+          a2.name ILIKE ${"%" + query + "%"} OR
+          f.created_at::text ILIKE ${"%" + query + "%"}
         )
-      ORDER BY created_at DESC
+      ORDER BY f.created_at DESC
       LIMIT 6 OFFSET ${(currentPage - 1) * 6};
     `;
 
@@ -684,41 +665,30 @@ export async function fetchFlightSchedules(query: string, currentPage: number){
         const { data: { user }} = await supabase.auth.getUser()
         if (!user) throw new Error('User not authenticated');
 
-        await sql`
-      CREATE OR REPLACE VIEW flight_schedule_view AS
+        const data = await sql<FlightScheduleViewRow[]>`
       SELECT 
-          fs.schedule_id,
-          fs.user_id,
-          fs.crew_id,
-          fs.flight_id,
-          f.flight_no,
-          c.crew_name,
-          fs.arrival_time,
-          fs.departure_time,
-          fs.date,
-          fs.created_at
+        fs.schedule_id,
+        fs.user_id,
+        fs.crew_id,
+        fs.flight_id,
+        f.flight_no,
+        c.crew_name,
+        fs.arrival_time,
+        fs.departure_time,
+        fs.date,
+        fs.created_at
       FROM flight_schedule fs
       JOIN flight f ON fs.flight_id = f.flight_id
-      JOIN crew c ON fs.crew_id = c.crew_id;
-    `;
-
-
-
-
-
-        
-        const data = await sql<FlightScheduleViewRow[]>`
-      SELECT *
-      FROM flight_schedule_view
-      WHERE user_id = ${user.id}
+      JOIN crew c ON fs.crew_id = c.crew_id
+      WHERE fs.user_id = ${user.id}
         AND (
-          flight_no ILIKE ${"%" + query + "%"} OR
-          crew_name ILIKE ${"%" + query + "%"} OR
-          arrival_time::text ILIKE ${"%" + query + "%"} OR
-          departure_time::text ILIKE ${"%" + query + "%"} OR
-          date::text ILIKE ${"%" + query + "%"}
+          f.flight_no ILIKE ${"%" + query + "%"} OR
+          c.crew_name ILIKE ${"%" + query + "%"} OR
+          fs.arrival_time::text ILIKE ${"%" + query + "%"} OR
+          fs.departure_time::text ILIKE ${"%" + query + "%"} OR
+          fs.date::text ILIKE ${"%" + query + "%"}
         )
-      ORDER BY date DESC, departure_time DESC
+      ORDER BY fs.date DESC, fs.departure_time DESC
       LIMIT 6 OFFSET ${(currentPage - 1) * 6};
     `;
 
@@ -770,7 +740,21 @@ export async function fetchFlightScheduleById(id: string){
     const { data: { user }} = await supabase.auth.getUser()
     if (!user) throw new Error('User not authenticated');
     try{
-        const data = await sql<FlightScheduleRow[]>`SELECT *, f.flight_no FROM flight_schedule fs JOIN flight f ON fs.flight_id = f.flight_id where schedule_id=${id} AND user_id=${user.id};`
+        const data = await sql<FlightScheduleRow[]>`
+          SELECT 
+            fs.schedule_id,
+            fs.user_id,
+            fs.crew_id,
+            fs.flight_id,
+            f.flight_no,
+            fs.arrival_time,
+            fs.departure_time,
+            fs.date,
+            fs.created_at
+          FROM flight_schedule fs
+          JOIN flight f ON fs.flight_id = f.flight_id
+          WHERE fs.schedule_id = ${id} AND fs.user_id = ${user.id};
+        `
         return data.map(schedule => ({
             ...schedule,
             arrival_time: schedule.arrival_time instanceof Date ? schedule.arrival_time.toISOString().split('T')[0] + ' ' + schedule.arrival_time.toTimeString().split(' ')[0] : schedule.arrival_time,

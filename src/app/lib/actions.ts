@@ -1,14 +1,14 @@
 'use server';
 
 import { z } from 'zod';
-import postgres from 'postgres';
+import { sql } from '@/app/lib/db';
 import { createClient } from '@/supabase/server';
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' as const });
+// using shared sql client from lib/db
 
 
 

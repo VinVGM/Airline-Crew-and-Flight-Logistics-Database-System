@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from '@/app/ui/button';
+import { SubmitButton } from '@/app/ui/submit-button';
 import Link from 'next/link';
 import { createAirport } from '@/app/lib/actions';
 import { useActionState } from 'react';
@@ -86,7 +86,7 @@ export default function Form() {
                     >
                         Cancel
                     </Link>
-                    <Button type='submit'>Create Airport</Button>
+                    <SubmitButton pendingText="Creating...">Create Airport</SubmitButton>
                 </div>
 
                 <div className='flex h-8 items-end space-x-1'>

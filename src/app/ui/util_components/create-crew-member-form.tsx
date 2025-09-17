@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from '@/app/ui/button';
+import { SubmitButton } from '@/app/ui/submit-button';
 import Link from 'next/link';
 import { createCrewMember } from '@/app/lib/actions';
 import { useActionState } from 'react';
@@ -53,7 +53,7 @@ export default function CrewMemberForm() {
 
                 <div className='flex justify-end gap-4 mt-6'>
                     <Link href="/dashboard/crew-members" className='flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 hover:bg-gray-200'>Cancel</Link>
-                    <Button type='submit'>Add Crew Member</Button>
+                    <SubmitButton pendingText="Adding...">Add Crew Member</SubmitButton>
                 </div>
 
                 <div className='flex h-8 items-end space-x-1'>

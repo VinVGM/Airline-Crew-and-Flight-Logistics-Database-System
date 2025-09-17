@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from '@/app/ui/button';
+import { SubmitButton } from '@/app/ui/submit-button';
 import Link from 'next/link';
 import { createFlightSchedule } from '@/app/lib/actions';
 import { useActionState } from 'react';
@@ -112,7 +112,7 @@ export default function Form({ crews, flights }: { crews: Crew[], flights: Fligh
                     >
                         Cancel
                     </Link>
-                    <Button type='submit'>Create Schedule</Button>
+                    <SubmitButton pendingText="Creating...">Create Schedule</SubmitButton>
                 </div>
 
                 <div className='flex h-8 items-end space-x-1'>

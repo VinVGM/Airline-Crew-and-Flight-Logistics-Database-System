@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/supabase/server'
-import postgres from 'postgres'
+import { sql } from '@/app/lib/db'
 import { z } from 'zod'
 
 
@@ -70,8 +70,6 @@ export async function signup(formData: FormData) {
             
             return "Something went wrong: " + error.message as string
         }else{
-            const sql = postgres(process.env.POSTGRES_URL!, {ssl : 'require'})
-
             await sql`
             INSERT INTO users (id, name, email)
             VALUES (${data!.user!.id}, ${credentials.name}, ${credentials.email})
