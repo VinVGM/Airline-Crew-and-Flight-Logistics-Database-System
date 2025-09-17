@@ -61,11 +61,22 @@ export default function TopLoader() {
       if (!el) return;
       const anchor = el as HTMLAnchorElement;
       const href = anchor.getAttribute('href') || '';
-      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+      if (
+        !href ||
+        anchor.target === '_blank' ||
+        anchor.hasAttribute('download') ||
+        href.startsWith('#') ||
+        href.startsWith('mailto:') ||
+        href.startsWith('tel:')
+      ) return;
       const url = new URL(href, window.location.href);
       const isSameOrigin = url.origin === window.location.origin;
       const isInternal = isSameOrigin && url.pathname.startsWith('/');
-      if (isInternal) start();
+      if (!isInternal) return;
+      // If navigating to the exact same path and search, do not start loader
+      const sameRoute = url.pathname === window.location.pathname && url.search === window.location.search;
+      if (sameRoute) return;
+      start();
     };
     window.addEventListener('click', onClick, true);
     window.addEventListener('popstate', start);
