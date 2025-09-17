@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 import Pagination from '@/app/ui/util_components/pagination';
 import { fetchAirports } from '@/app/lib/data-acfl';
 import { fetchAirportsPages } from '@/app/lib/data-acfl';
+import Breadcrumbs from '@/app/ui/util_components/breadcrumbs';
 
 export default async function Page(props : {
     searchParams?: Promise<
@@ -23,6 +24,12 @@ export default async function Page(props : {
 
     return (
         <div>
+            <Breadcrumbs
+                breadcrumbs={[
+                    { label: 'Dashboard', href: '/dashboard' },
+                    { label: 'Airports', href: '/dashboard/airports', active: true },
+                ]}
+            />
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
                 <Search placeholder="Search airports..." />
                 <CreateAirport />
