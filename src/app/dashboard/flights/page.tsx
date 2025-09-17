@@ -34,7 +34,7 @@ export default async function Page(props : {
                 <Search placeholder="Search flights..." />
                 <CreateFlight />
             </div>
-            <Suspense fallback={<FlightsTableSkeleton/>}>
+            <Suspense key={query + currentPage} fallback={<FlightsTableSkeleton/>}>
                 <FlightsTable query={query} currentPage={currentPage} />
             </Suspense>
 

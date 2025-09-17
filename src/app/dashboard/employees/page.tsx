@@ -36,7 +36,7 @@ export default async function Page(props : {
                 <Search placeholder="Search employees..." />
                 <CreateEmployee />
             </div>
-            <Suspense fallback={<EmployeesTableSkeleton/>}>
+            <Suspense key={query + currentPage} fallback={<EmployeesTableSkeleton/>}>
                 <EmployeesTable query={query} currentPage={currentPage} />
             </Suspense>
 
