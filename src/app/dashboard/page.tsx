@@ -1,3 +1,21 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  description: 'ACFL-DBS Dashboard - Overview of flight operations, active flights, and airports',
+  openGraph: {
+    title: 'Dashboard - ACFL-DBS',
+    description: 'ACFL-DBS Dashboard - Overview of flight operations, active flights, and airports',
+    images: ['/meta.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Dashboard - ACFL-DBS',
+    description: 'ACFL-DBS Dashboard - Overview of flight operations, active flights, and airports',
+    images: ['/meta.png'],
+  },
+};
+
 export const dynamic = "force-dynamic";
 
 import FlightSchedulesTable from "@/app/ui/schedules/table";

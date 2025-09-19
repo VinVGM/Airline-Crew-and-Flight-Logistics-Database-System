@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Create Crew Member',
+};
+
 import Form from "@/app/ui/crew-members/form";
 
 import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";

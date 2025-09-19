@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Edit Schedule',
+};
+
 import EditForm from "@/app/ui/util_components/edit-schedule-form";
 import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";
 import { fetchFlightScheduleById, fetchCrews, fetchFlights} from "@/app/lib/data-acfl";

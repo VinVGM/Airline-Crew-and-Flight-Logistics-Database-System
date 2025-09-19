@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Schedules',
+};
+
 import SchedulesTable from '@/app/ui/schedules/table';
 import Search from '@/app/ui/search';
 import { CreateSchedule } from '@/app/ui/schedules/buttons';

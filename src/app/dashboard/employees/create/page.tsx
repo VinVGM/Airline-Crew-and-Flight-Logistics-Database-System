@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Create Employee',
+};
+
 import Form from "@/app/ui/util_components/create-employee-form";
 
 import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";

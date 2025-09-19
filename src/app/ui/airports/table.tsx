@@ -43,7 +43,10 @@ export default async function AirportsTable({
                       Created: {airport.created_at}
                     </p>
                   </div>
-                  
+                  <div className='flex gap-2 pt-4'>
+                    <UpdateAirport id={airport.airport_id}/>
+                    <DeleteAirport id={airport.airport_id}/>
+                  </div>
                 </div>
               </div>
             ))}

@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Edit Aircraft',
+};
+
 import EditForm from "@/app/ui/util_components/edit-aircraft-form";
 import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";
 import { fetchAircraftById} from "@/app/lib/data-acfl";

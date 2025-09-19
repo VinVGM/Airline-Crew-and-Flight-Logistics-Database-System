@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Aircrafts',
+};
+
 import AircraftsTable from '@/app/ui/aircrafts/table';
 import Search from '@/app/ui/search';
 import { CreateAircraft } from '@/app/ui/aircrafts/buttons';

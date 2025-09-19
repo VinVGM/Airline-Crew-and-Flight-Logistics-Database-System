@@ -46,7 +46,10 @@ export default async function AircraftsTable({
                       Created: {aircraft.created_at}
                     </p>
                   </div>
-                  
+                  <div className='flex gap-2 pt-4'>
+                    <UpdateAircraft id={aircraft.aircraft_id}/>
+                    <DeleteAircraft id={aircraft.aircraft_id}/>
+                  </div>                  
                 </div>
               </div>
             ))}
