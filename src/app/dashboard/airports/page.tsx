@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Airports',
+};
+
 import AirportsTable from '@/app/ui/airports/table';
 import Search from '@/app/ui/search';
 import { CreateAirport } from '@/app/ui/airports/buttons';

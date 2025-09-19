@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Private',
+};
+
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/supabase/server'

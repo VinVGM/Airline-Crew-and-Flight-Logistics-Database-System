@@ -1,3 +1,21 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Flights',
+  description: 'Manage flight information, schedules, and logistics in ACFL-DBS',
+  openGraph: {
+    title: 'Flights - ACFL-DBS',
+    description: 'Manage flight information, schedules, and logistics in ACFL-DBS',
+    images: ['/meta.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Flights - ACFL-DBS',
+    description: 'Manage flight information, schedules, and logistics in ACFL-DBS',
+    images: ['/meta.png'],
+  },
+};
+
 import FlightsTable from '@/app/ui/flights/table';
 import Search from '@/app/ui/search';
 import { CreateFlight } from '@/app/ui/flights/buttons';

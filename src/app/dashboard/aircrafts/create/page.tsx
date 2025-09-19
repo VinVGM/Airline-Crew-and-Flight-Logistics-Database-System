@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Create Aircraft',
+};
+
 import Form from "@/app/ui/util_components/create-aircraft-form";
 
 import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";

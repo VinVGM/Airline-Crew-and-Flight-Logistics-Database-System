@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Edit Crew',
+};
+
 import { Suspense } from "react";
 import Breadcrumbs from "../../../../ui/util_components/breadcrumbs";
 

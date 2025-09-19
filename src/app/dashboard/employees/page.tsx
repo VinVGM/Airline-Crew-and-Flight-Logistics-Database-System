@@ -1,4 +1,10 @@
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Employees',
+};
+
 import EmployeesTable from '@/app/ui/employees/table';
 import Search from '@/app/ui/search';
 import { CreateEmployee } from '@/app/ui/employees/buttons';

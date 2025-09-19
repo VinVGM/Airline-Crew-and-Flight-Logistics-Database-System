@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Crew Members',
+};
+
 import CrewMembersTable from '@/app/ui/crew-members/table';
 import {CreateCrewMembers } from '@/app/ui/crews/buttons';
 

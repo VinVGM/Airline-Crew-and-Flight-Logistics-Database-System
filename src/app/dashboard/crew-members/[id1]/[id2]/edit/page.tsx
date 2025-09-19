@@ -1,5 +1,11 @@
 
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Edit Crew Member',
+};
+
 import Form from "@/app/ui/crew-members/edit-form";
 import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";
 import { fetchCrewMemberById, fetchCrews, fetchEmployeeById, fetchEmployees} from "@/app/lib/data-acfl";

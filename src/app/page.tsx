@@ -1,3 +1,21 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'ACFL-DBS',
+  description: 'Airline Crew and Flight Logistics Database System - Manage your flight operations with ease',
+  openGraph: {
+    title: 'ACFL-DBS',
+    description: 'Airline Crew and Flight Logistics Database System - Manage your flight operations with ease',
+    images: ['/meta.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ACFL-DBS',
+    description: 'Airline Crew and Flight Logistics Database System - Manage your flight operations with ease',
+    images: ['/meta.png'],
+  },
+};
+
 import Logo from '@/app/ui/logo';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
@@ -14,13 +32,15 @@ export default function Page() {
         <Logo  />
       </div>
       <div className=" mt-2 flex grow flex-col md:gap-4 md:flex-row">
-        <div className="hidden flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12 md:block">
+        <div className="hidden md:block flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
           <Image
             src="/hero-desktop.png"
             alt="SS of dashboard in desktop"
-            width={1024}
-            height={760}
-            className='hidden md:block'
+            width={1200}
+            height={800}
+            priority
+            sizes="(min-width: 768px) 60vw, 0px"
+            className='w-full h-auto max-w-full'
           />
           
         </div>
@@ -39,13 +59,15 @@ export default function Page() {
           </Link>
         </div>
 
-        <div className="md:hidden flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
+        <div className="md:hidden flex items-center justify-center p-6">
           <Image
             src="/hero-mobile.png"
             alt="SS of dashboard in mobile"
             width={560}
             height={620}
-            className='block md:hidden'
+            priority
+            sizes="100vw"
+            className='w-full h-auto'
           />   
         </div>
         

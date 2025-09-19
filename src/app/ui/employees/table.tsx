@@ -50,7 +50,10 @@ export default async function EmployeesTable({
                       Joined: {employee.created_at}
                     </p>
                   </div>
-                  
+                  <div className='flex gap-2 pt-4'>
+                    <UpdateEmployee id={employee.employee_id}/>
+                    <DeleteEmployee id={employee.employee_id}/>
+                  </div>
                 </div>
               </div>
             ))}

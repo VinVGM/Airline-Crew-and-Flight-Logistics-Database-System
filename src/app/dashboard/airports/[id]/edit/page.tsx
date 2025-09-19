@@ -1,3 +1,9 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Edit Airport',
+};
+
 import EditForm from "@/app/ui/util_components/edit-airport-form";
 import Breadcrumbs from "@/app/ui/util_components/breadcrumbs";
 import { fetchAirportById} from "@/app/lib/data-acfl";
