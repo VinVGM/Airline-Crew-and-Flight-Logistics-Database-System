@@ -12,6 +12,7 @@ import { CrewsTableSkeleton } from "@/app/ui/skeletons";
 import Pagination from '@/app/ui/util_components/pagination';
 import { fetchCrews } from '@/app/lib/data-acfl';
 import { fetchCrewsPages } from '@/app/lib/data-acfl';
+import Breadcrumbs from '@/app/ui/util_components/breadcrumbs';
 
 export default async function Page(props : {
     searchParams?: Promise<
@@ -29,11 +30,17 @@ export default async function Page(props : {
 
     return (
         <div>
+            <Breadcrumbs
+                breadcrumbs={[
+                    { label: 'Dashboard', href: '/dashboard' },
+                    { label: 'Crews', href: '/dashboard/crews', active: true },
+                ]}
+            />
             <div className='flex items-center justify-between gap-2 mt-4 md:mt-8'>
                 <Search placeholder='Search Crew'/>
                 <CreateCrew/>
             </div>
-            <Suspense fallback={<CrewsTableSkeleton/>}>
+            <Suspense key={query + currentPage} fallback={<CrewsTableSkeleton/>}>
                 <CrewsTable query={query} currentPage={currentPage} />
             </Suspense>
 
