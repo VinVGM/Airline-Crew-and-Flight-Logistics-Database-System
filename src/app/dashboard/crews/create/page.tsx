@@ -1,11 +1,5 @@
 "use client";
 
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Create Crew',
-};
-
 import { SubmitButton } from "@/app/ui/submit-button";
 import Link from "next/link";
 import { createCrew } from "@/app/lib/actions";
