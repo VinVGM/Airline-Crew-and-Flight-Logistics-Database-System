@@ -12,6 +12,7 @@ import { Suspense } from 'react';
 import Pagination from '@/app/ui/util_components/pagination';
 import { fetchFlightSchedules } from '@/app/lib/data-acfl';
 import { fetchFlightSchedulesPages } from '@/app/lib/data-acfl';
+import Breadcrumbs from '@/app/ui/util_components/breadcrumbs';
 
 export default async function Page(props : {
     searchParams?: Promise<
@@ -29,11 +30,17 @@ export default async function Page(props : {
 
     return (
         <div>
+            <Breadcrumbs
+                breadcrumbs={[
+                    { label: 'Dashboard', href: '/dashboard' },
+                    { label: 'Schedules', href: '/dashboard/schedules', active: true },
+                ]}
+            />
             <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
                 <Search placeholder="Search schedules..." />
                 <CreateSchedule />
             </div>
-            <Suspense fallback={<SchedulesTableSkeleton/>}>
+            <Suspense key={query + currentPage} fallback={<SchedulesTableSkeleton/>}>
                 <SchedulesTable query={query} currentPage={currentPage} />
             </Suspense>
 

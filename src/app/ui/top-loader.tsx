@@ -9,12 +9,20 @@ export default function TopLoader() {
   const [progress, setProgress] = useState(0);
   const rafRef = useRef<number | null>(null);
   const runningRef = useRef(false);
+  const progressRef = useRef(0);
+  const toOneTimerRef = useRef<number | null>(null);
+  const resetTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    progressRef.current = progress;
+  }, [progress]);
 
   const trickle = () => {
     // Progress grows quickly at first, then slows
     setProgress(prev => {
       const delta = (1 - prev) * 0.08; // ease-out
-      const next = Math.min(prev + delta, 0.994); // don't reach 1 until finish
+      // Cap at 70% while loading; finish() will drive 70% -> 100%
+      const next = Math.min(prev + delta, 0.6);
       return next;
     });
     rafRef.current = requestAnimationFrame(trickle);
@@ -33,10 +41,14 @@ export default function TopLoader() {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
-    // Complete and then reset after fade
-    setProgress(1);
-    // Reset to 0 after the CSS transition completes
-    setTimeout(() => setProgress(0), 200);
+    // Jump to at least 70%, then animate to 100%, then reset
+    setProgress(p => (p < 0.6 ? 0.6 : p));
+    if (toOneTimerRef.current) window.clearTimeout(toOneTimerRef.current);
+    if (resetTimerRef.current) window.clearTimeout(resetTimerRef.current);
+    toOneTimerRef.current = window.setTimeout(() => {
+      setProgress(1);
+      resetTimerRef.current = window.setTimeout(() => setProgress(0), 250);
+    }, 80);
   };
 
   // Detect internal link clicks to start progress immediately
@@ -49,11 +61,22 @@ export default function TopLoader() {
       if (!el) return;
       const anchor = el as HTMLAnchorElement;
       const href = anchor.getAttribute('href') || '';
-      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+      if (
+        !href ||
+        anchor.target === '_blank' ||
+        anchor.hasAttribute('download') ||
+        href.startsWith('#') ||
+        href.startsWith('mailto:') ||
+        href.startsWith('tel:')
+      ) return;
       const url = new URL(href, window.location.href);
       const isSameOrigin = url.origin === window.location.origin;
       const isInternal = isSameOrigin && url.pathname.startsWith('/');
-      if (isInternal) start();
+      if (!isInternal) return;
+      // If navigating to the exact same path and search, do not start loader
+      const sameRoute = url.pathname === window.location.pathname && url.search === window.location.search;
+      if (sameRoute) return;
+      start();
     };
     window.addEventListener('click', onClick, true);
     window.addEventListener('popstate', start);

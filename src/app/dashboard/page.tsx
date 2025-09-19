@@ -44,7 +44,7 @@ export default async function Page() {
                 <CardDescription></CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="border-2 rounded-lg overflow-x-auto">
+              <div className="border-2 rounded-lg overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200 text-sm">
                     <thead className="bg-gray-50">
                       <tr>
@@ -60,15 +60,23 @@ export default async function Page() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                      {activeFlights?.map((flight) => (
-                        <tr key={flight.flight_id}>
-                          <td className="px-4 py-2">{flight.flight_no}</td>
-                          <td className="px-4 py-2">{flight.origin_code}</td>
-                          <td className="px-4 py-2">
-                            {flight.destination_code}
+                      {activeFlights && activeFlights.length > 0 ? (
+                        activeFlights.map((flight) => (
+                          <tr key={flight.flight_id}>
+                            <td className="px-4 py-2">{flight.flight_no}</td>
+                            <td className="px-4 py-2">{flight.origin_code}</td>
+                            <td className="px-4 py-2">{flight.destination_code}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={3} className="px-4 py-2">
+                            <div className="flex items-center justify-center text-gray-500 min-h-48">
+                              No data
+                            </div>
                           </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -84,7 +92,7 @@ export default async function Page() {
                 <CardDescription></CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="border-2 rounded-lg overflow-x-auto">
+              <div className="border-2 rounded-lg overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200 text-sm">
                     <thead className="bg-gray-50">
                       <tr>
@@ -100,13 +108,23 @@ export default async function Page() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                      {activeAirports?.map((airport) => (
-                        <tr key={airport.airport_id}>
-                          <td className="px-4 py-2">{airport.code}</td>
-                          <td className="px-4 py-2">{airport.name}</td>
-                          <td className="px-4 py-2">{airport.country}</td>
+                      {activeAirports && activeAirports.length > 0 ? (
+                        activeAirports.map((airport) => (
+                          <tr key={airport.airport_id}>
+                            <td className="px-4 py-2">{airport.code}</td>
+                            <td className="px-4 py-2">{airport.name}</td>
+                            <td className="px-4 py-2">{airport.country}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={3} className="px-4 py-2">
+                            <div className="flex items-center justify-center text-gray-500 min-h-48">
+                              No data
+                            </div>
+                          </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
