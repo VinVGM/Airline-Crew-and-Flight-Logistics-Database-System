@@ -35,7 +35,7 @@ Manage airline operations data end‑to‑end with a modern, full‑stack dashbo
 
 ## 🚀 Live Demo
 
-**[View Live Application](https://airline-crew-and-flight-logistics-d-git-c81d19-vinvgms-projects.vercel.app/)**
+**[View Live Application](https://airline-crew-and-flight-logistics-d.vercel.app/)**
 
 ## Architecture Overview
 
