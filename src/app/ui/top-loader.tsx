@@ -51,32 +51,45 @@ export default function TopLoader() {
     }, 80);
   };
 
-  // Detect internal link clicks to start progress immediately
+  // Detect internal link clicks and form submissions to start progress immediately
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       // Only left click without modifier keys
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       let el = e.target as HTMLElement | null;
-      while (el && el.tagName !== 'A') el = el.parentElement;
+      while (el && el.tagName !== 'A' && el.tagName !== 'BUTTON') el = el.parentElement;
       if (!el) return;
-      const anchor = el as HTMLAnchorElement;
-      const href = anchor.getAttribute('href') || '';
-      if (
-        !href ||
-        anchor.target === '_blank' ||
-        anchor.hasAttribute('download') ||
-        href.startsWith('#') ||
-        href.startsWith('mailto:') ||
-        href.startsWith('tel:')
-      ) return;
-      const url = new URL(href, window.location.href);
-      const isSameOrigin = url.origin === window.location.origin;
-      const isInternal = isSameOrigin && url.pathname.startsWith('/');
-      if (!isInternal) return;
-      // If navigating to the exact same path and search, do not start loader
-      const sameRoute = url.pathname === window.location.pathname && url.search === window.location.search;
-      if (sameRoute) return;
-      start();
+      
+      // Handle link clicks
+      if (el.tagName === 'A') {
+        const anchor = el as HTMLAnchorElement;
+        const href = anchor.getAttribute('href') || '';
+        if (
+          !href ||
+          anchor.target === '_blank' ||
+          anchor.hasAttribute('download') ||
+          href.startsWith('#') ||
+          href.startsWith('mailto:') ||
+          href.startsWith('tel:')
+        ) return;
+        const url = new URL(href, window.location.href);
+        const isSameOrigin = url.origin === window.location.origin;
+        const isInternal = isSameOrigin && url.pathname.startsWith('/');
+        if (!isInternal) return;
+        // If navigating to the exact same path and search, do not start loader
+        const sameRoute = url.pathname === window.location.pathname && url.search === window.location.search;
+        if (sameRoute) return;
+        start();
+      }
+      
+      // Handle form submissions (login, signup, etc.)
+      if (el.tagName === 'BUTTON') {
+        const button = el as HTMLButtonElement;
+        const form = button.closest('form');
+        if (form && form.action) {
+          start();
+        }
+      }
     };
     window.addEventListener('click', onClick, true);
     window.addEventListener('popstate', start);
